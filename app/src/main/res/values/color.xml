@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red">#ff0000</color>
+    <color name="black">#000000</color>
+    <color name="Gray">#C0C0C0</color>
+    <color name="White">#FFFFFF</color>
+    <color name="Yellow">#FFFF00</color>
+    <color name="Blue">#00FFFF</color>
+    <color name="RoyalBlue">#4169E1</color>
+    <color name="Orange">#FF6100</color>
+    <color name="Brown">#802A2A</color>
+    <color name="Green">#00FF00</color>
+    <color name="ForestGreen">#228B22</color>
+    <color name="DarkGreen">#308014</color>
+    <color name="Purple">#A020F0</color>
+    <color name="NavyBlue">#191970</color>
+    <color name="IndiaRed">#B0171F</color>
+    <color name="PeacockBlue">#33A1C9</color>
+    <color name="JackieBlue">#0B1746</color>
+    <color name="LiteGray">#DCDCDC</color>
+    <color name="ColdGray">#C0C0C0</color>
+    <color name="menuItemUnselectedColor">#82858b</color>
+
+</resources>
