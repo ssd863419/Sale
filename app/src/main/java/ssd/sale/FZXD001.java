@@ -12,7 +12,8 @@ import android.view.ViewGroup;
 public class FZXD001 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fzxd001, container, false);
 
-        return inflater.inflate(R.layout.fzxd001, container, false);
+        return v;
     }
 }

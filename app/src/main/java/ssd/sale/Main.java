@@ -1,23 +1,25 @@
 package ssd.sale;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import java.lang.reflect.Method;
 
 
 public class Main extends Activity {
-    //TODO 點擊手機首頁再回來, Fragment會重疊顯示, 後面再設法解決
-
     /* 用於展示每個Tab Item的Fragment, 也就是該menu對應的畫面 */
     private Menu_JinH menuJinH;
     private Menu_XiaoS menuXiaoS;
@@ -40,6 +42,10 @@ public class Main extends Activity {
     private View layoutBaoB;
     private View layoutXiT;
 
+    /* 表頭與表尾 */
+    static private FrameLayout frameLayout_title;      // 畫面最上方的"服裝小店管理系統"
+    static private FrameLayout frameLayout_bottom;     // 畫面下方的 "Powered by 山海觀工作室"
+
     private FragmentManager fragmentManager;        //用於對Fragment進行管理
 
     @Override
@@ -51,6 +57,12 @@ public class Main extends Activity {
         initViews();
         fragmentManager = getFragmentManager();
         setTabSelection(0);
+    }
+
+    /* 下面這個空的方法必須保留, 否則Fragment會在某些情況下, 發生重疊顯示 */
+    @Override
+    protected void onSaveInstanceState(Bundle bundle) {
+        // empty
     }
 
     /* 初始化每個需要用到的控件, 並且設置必要的點擊事件 */
@@ -70,11 +82,20 @@ public class Main extends Activity {
         layoutPanD.setOnClickListener(menuClick);
         layoutBaoB.setOnClickListener(menuClick);
         layoutXiT.setOnClickListener(menuClick);
+        menuJinH = new Menu_JinH();
+        menuXiaoS = new Menu_XiaoS();
+        menuPanD = new Menu_PanD();
+        menuBaoB = new Menu_BaoB();
+        menuXiT = new Menu_XiT();
+        frameLayout_title = (FrameLayout) findViewById(R.id.content_title);
+        frameLayout_bottom = (FrameLayout) findViewById(R.id.content_bottom);
     }
 
     Button.OnClickListener menuClick = new Button.OnClickListener() {
         @Override
         public void onClick(View v) {
+            frameLayout_title.setVisibility(View.VISIBLE);
+            frameLayout_bottom.setVisibility(View.VISIBLE);
             switchViewId(v.getId());
         }
     };
@@ -105,53 +126,33 @@ public class Main extends Activity {
     private void setTabSelection(int index) {
         clearSelection();   // 每次選中之前, 先清除上次的選中狀態
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        hideFragments(transaction);     // 隱藏所有的Fragment
+        //transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
         switch (index) {
             case R.id.layout_jinH:
                 mTextViewJinH.setTextColor(Color.WHITE);
-                if (menuJinH == null) {
-                    menuJinH = new Menu_JinH();
-                    transaction.add(R.id.content, menuJinH);
-                } else {
-                    transaction.show(menuJinH);
-                }
+                transaction.replace(R.id.content, menuJinH);
                 break;
+
             case R.id.layout_xiaoS:
                 mTextViewXiaoS.setTextColor(Color.WHITE);
-                if (menuXiaoS == null) {
-                    menuXiaoS = new Menu_XiaoS();
-                    transaction.add(R.id.content, menuXiaoS);
-                } else {
-                    transaction.show(menuXiaoS);
-                }
+                transaction.replace(R.id.content, menuXiaoS);
                 break;
+
             case R.id.layout_panD:
                 mTextViewPanD.setTextColor(Color.WHITE);
-                if (menuPanD == null) {
-                    menuPanD = new Menu_PanD();
-                    transaction.add(R.id.content, menuPanD);
-                } else {
-                    transaction.show(menuPanD);
-                }
+                transaction.replace(R.id.content, menuPanD);
                 break;
+
             case R.id.layout_baoB:
                 mTextViewBaoB.setTextColor(Color.WHITE);
-                if (menuBaoB == null) {
-                    menuBaoB = new Menu_BaoB();
-                    transaction.add(R.id.content, menuBaoB);
-                } else {
-                    transaction.show(menuBaoB);
-                }
+                transaction.replace(R.id.content, menuBaoB);
                 break;
+
             case R.id.layout_xiT:
                 mTextViewXiT.setTextColor(Color.WHITE);
-                if (menuXiT == null) {
-                    menuXiT = new Menu_XiT();
-                    transaction.add(R.id.content, menuXiT);
-                } else {
-                    transaction.show(menuXiT);
-                }
+                transaction.replace(R.id.content, menuXiT);
                 break;
+
             default:
                 if (menuMajor == null) {
                     menuMajor = new Menu_Major();
@@ -171,28 +172,6 @@ public class Main extends Activity {
         mTextViewPanD.setTextColor(getResources().getColor(R.color.menuItemUnselectedColor));
         mTextViewBaoB.setTextColor(getResources().getColor(R.color.menuItemUnselectedColor));
         mTextViewXiT.setTextColor(getResources().getColor(R.color.menuItemUnselectedColor));
-    }
-
-    /* 隱藏所有的Fragment */
-    private void hideFragments(FragmentTransaction transaction) {
-        if (menuJinH != null) {
-            transaction.hide(menuJinH);
-        }
-        if (menuXiaoS != null) {
-            transaction.hide(menuXiaoS);
-        }
-        if (menuPanD != null) {
-            transaction.hide(menuPanD);
-        }
-        if (menuBaoB != null) {
-            transaction.hide(menuBaoB);
-        }
-        if (menuXiT != null) {
-            transaction.hide(menuXiT);
-        }
-        if (menuMajor != null) {
-            transaction.hide(menuMajor);
-        }
     }
 
     @Override
@@ -222,6 +201,61 @@ public class Main extends Activity {
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public static class Menu_XiT extends Fragment implements Button.OnClickListener {
+        private Button mButton_xiuGMM;      // 修改密碼
+        private Button mButton_gongYSSD;    // 供應商設定
+        private Button mButton_shiYSM;      // 使用說明
+        private Button mButton_chongZ;      // 充值
+        private Button mButton_tuiJSYZ;     // 推薦使用者
+        private Button mButton_dengC;       // 登出
+        private FragmentManager fragmentManager;
+        private FZXD001 fzxd001;
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.menu_xit, container, false);
+            initView(v);
+
+            return v;
+        }
+
+        private void initView(View v) {
+            mButton_xiuGMM = (Button) v.findViewById(R.id.myButton_xiuGMM);
+            mButton_gongYSSD = (Button) v.findViewById(R.id.myButton_gongYSSD);
+            mButton_shiYSM = (Button) v.findViewById(R.id.myButton_shiYSM);
+            mButton_chongZ = (Button) v.findViewById(R.id.myButton_chongZ);
+            mButton_tuiJSYZ = (Button) v.findViewById(R.id.myButton_tuiJSYZ);
+            mButton_dengC = (Button) v.findViewById(R.id.myButton_dengC);
+            fragmentManager = getFragmentManager();
+
+            mButton_xiuGMM.setOnClickListener(this);
+            mButton_gongYSSD.setOnClickListener(this);
+            mButton_shiYSM.setOnClickListener(this);
+            mButton_chongZ.setOnClickListener(this);
+            mButton_tuiJSYZ.setOnClickListener(this);
+            mButton_dengC.setOnClickListener(this);
+
+        }
+
+        @Override
+        public void onClick(View view) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            frameLayout_title.setVisibility(View.GONE);
+            frameLayout_bottom.setVisibility(View.GONE);
+
+            switch (view.getId()) {
+                case R.id.myButton_xiuGMM :
+                    fzxd001 = new FZXD001();
+                    transaction.replace(R.id.content, fzxd001);
+                    transaction.commit();
+                    break;
+                case R.id.myButton_gongYSSD :
+                    // do something
+                    break;
+            }
         }
     }
 }
