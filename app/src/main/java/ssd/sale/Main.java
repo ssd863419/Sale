@@ -204,6 +204,7 @@ public class Main extends Activity {
         }
     }
 
+    /* 選單: 系統 的Fragment畫面 */
     public static class Menu_XiT extends Fragment implements Button.OnClickListener {
         private Button mButton_xiuGMM;      // 修改密碼
         private Button mButton_gongYSSD;    // 供應商設定
@@ -247,15 +248,89 @@ public class Main extends Activity {
             frameLayout_bottom.setVisibility(View.GONE);
 
             switch (view.getId()) {
-                case R.id.myButton_xiuGMM :
+                case R.id.myButton_gongYSSD :
                     fzxd001 = new FZXD001();
                     transaction.replace(R.id.content, fzxd001);
                     transaction.commit();
                     break;
-                case R.id.myButton_gongYSSD :
-                    // do something
-                    break;
+
             }
+        }
+    }
+
+    /* 選單: 報表 的Fragment畫面 */
+    public static class Menu_BaoB extends Fragment implements Button.OnClickListener {
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.menu_baob, container, false);
+
+            return v;
+        }
+
+
+
+        @Override
+        public void onClick(View view) {
+
+        }
+    }
+
+    /* 選單: 進貨 的Fragment畫面 */
+    public static class Menu_JinH extends Fragment implements Button.OnClickListener {
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.menu_jinh, container, false);
+
+            return v;
+        }
+
+
+
+        @Override
+        public void onClick(View view) {
+
+        }
+    }
+
+    /* 選單: 盤點 的Fragment畫面 */
+    public static class Menu_PanD extends Fragment implements Button.OnClickListener {
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.menu_pand, container, false);
+
+            return v;
+        }
+
+
+
+        @Override
+        public void onClick(View view) {
+
+        }
+    }
+
+    /* 選單: 銷售 的Fragment畫面 */
+    public static class Menu_XiaoS extends Fragment implements Button.OnClickListener {
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            View v = inflater.inflate(R.layout.menu_xiaos, container, false);
+
+            return v;
+        }
+
+
+
+        @Override
+        public void onClick(View view) {
+
         }
     }
 }
