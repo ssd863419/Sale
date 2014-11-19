@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 
 /**
  * Created by Administrator on 2014/11/15.
+ *
+ *
  */
 public class Menu_Major extends Fragment {
     @Override
