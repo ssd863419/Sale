@@ -55,7 +55,6 @@ public class Main extends Activity {
         setContentView(R.layout.menu_tab_layout);
 
         initViews();
-        fragmentManager = getFragmentManager();
         setTabSelection(0);
     }
 
@@ -89,6 +88,7 @@ public class Main extends Activity {
         menuXiT = new Menu_XiT();
         frameLayout_title = (FrameLayout) findViewById(R.id.content_title);
         frameLayout_bottom = (FrameLayout) findViewById(R.id.content_bottom);
+        fragmentManager = getFragmentManager();
     }
 
     Button.OnClickListener menuClick = new Button.OnClickListener() {

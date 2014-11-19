@@ -5,4 +5,28 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="Basic_SSD" parent="@android:style/Theme.Light">
+        <item name="android:editTextStyle">@style/EditText_SSD</item>
+    </style>
+
+    <style name="EditText_SSD" parent="android:Widget.EditText">
+        <item name="android:singleLine">true</item>
+        <item name="android:background">@drawable/edittext_selector</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingLeft">3dip</item> <!-- 字在輸入框內的內邊距 -->
+        <item name="android:paddingTop">5dip</item> <!-- 字在輸入框內的內邊距 -->
+        <item name="android:paddingBottom">5dip</item> <!-- 字在輸入框內的內邊距 -->
+        <item name="android:width">200dp</item>
+    </style>
+
+    <style name="Padding_TOP10_LEFT10">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+    </style>
+
+    <style name="Padding_TOP5_BOTTOM5">
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
 </resources>

@@ -37,5 +37,13 @@
     <string name="tuiJSYZ">推薦使用者</string>
     <string name="dengC">登出</string>
     <string name="xinZ">新增</string>
+    <string name="chuC">儲存</string>
+    <string name="xiaYB">下一筆</string>
+    <string name="fanH">返回</string>
+    <string name="gongYSMC">供應商名稱</string>
+    <string name="gongYSDZ">供應商地址</string>
+    <string name="lianXRXM">聯繫人姓名</string>
+    <string name="lianXRDH">聯繫人電話</string>
+    <string name="beiZ">備註</string>
 
 </resources>

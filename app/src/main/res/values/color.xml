@@ -2,7 +2,7 @@
 <resources>
     <color name="red">#ff0000</color>
     <color name="black">#000000</color>
-    <color name="Gray">#C0C0C0</color>
+    <color name="Gray">#808080</color>
     <color name="White">#FFFFFF</color>
     <color name="Yellow">#FFFF00</color>
     <color name="Blue">#00FFFF</color>
@@ -20,5 +20,7 @@
     <color name="LiteGray">#DCDCDC</color>
     <color name="ColdGray">#C0C0C0</color>
     <color name="menuItemUnselectedColor">#82858b</color>
+    <color name="gainsboro">#dcdcdc</color>
+    <color name="dimgray">#696969</color>
 
 </resources>
