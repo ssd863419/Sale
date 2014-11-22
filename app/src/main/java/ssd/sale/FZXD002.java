@@ -6,11 +6,8 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,12 +34,13 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     private EditText mEditText_beiZ;        // 備註
     private FragmentManager fragmentManager;
     private FZXD001 fzxd001;
-    private FZXD002DBHelper fzxd002DBHelper;
+    private MyDbHelper myDbHelper;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fzxd002, container, false);
         initView(v);
+        myDbHelper.init();
 
         return v;
     }
@@ -58,7 +56,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         mEditText_beiZ = (EditText) view.findViewById(R.id.myEditText_beiZ);
         fragmentManager = getFragmentManager();
         fzxd001 = new FZXD001();
-        fzxd002DBHelper = new FZXD002DBHelper(this.getActivity());
+        myDbHelper = new MyDbHelper();
 
         mButton_save.setOnClickListener(this);
         mButton_next.setOnClickListener(this);
@@ -71,7 +69,6 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        // TODO 沒有儲存, 下一筆無效, 輸入框沒資料, 儲存無效, 沒有儲存, 返回須提示
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
         switch (view.getId()) {
@@ -79,7 +76,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 // TODO 後面需要存入店面檔的sn, 那是在有帳號密碼登錄畫面+上傳雲端硬盤的操作之後
                 // TODO 後面須考量資料庫版本更新的操作
                 String[] temp = {mEditText_gongYSMC.getText().toString()};
-                if (fzxd002DBHelper.checkGongYSMCisUsed(temp)) {
+                if (myDbHelper.checkGongYSMCisUsed(temp)) {
                     /* 如果已存在供應商名稱 */
                     new AlertDialog.Builder(this.getActivity())
                         .setMessage(R.string.gongYSMCCF)
@@ -100,7 +97,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                         public void run() {
                             try {
                                 long startTime = Calendar.getInstance().getTimeInMillis();
-                                fzxd002DBHelper.insert(
+                                myDbHelper.insert(
                                         mEditText_gongYSMC.getText().toString(),
                                         mEditText_gongYSDZ.getText().toString(),
                                         mEditText_lianXRXM.getText().toString(),
@@ -126,7 +123,6 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 break;
 
             case R.id.myButton_next:
-                // TODO 點擊下一筆時, 要確認使用者有儲存過該資料
                 mEditText_gongYSMC.setText("");
                 mEditText_gongYSDZ.setText("");
                 mEditText_lianXRXM.setText("");
@@ -162,9 +158,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         }
     };
 
-    public class FZXD002DBHelper extends SQLiteOpenHelper {
-        private static final String DATABASE_NAME = "fuZXD";
-        private static final int DATABASE_VERSION = 3;
+    private class MyDbHelper {
+        private Db db = new Db(getActivity());
         private static final String TABLE_NAME = "fuZXD003";
         private static final String _ID = "_id";
         private static final String FIELD_gongYSMC = "gongYSMC";
@@ -190,25 +185,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 FIELD_updDay + " TEXT NOT NULL" +
                 ")";
 
-        private SQLiteDatabase database;
-
-        public FZXD002DBHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-            database = this.getWritableDatabase();
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(sql);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            onCreate(db);
-        }
-
-        public void close() {
-            database.close();
+        private void init() {
+            db.setSql(sql);
         }
 
         public void insert(String gongYSMC, String gongYSDZ, String lianXRXM,
@@ -222,15 +200,15 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
             values.put(FIELD_beiZ, beiZ);
             values.put(FIELD_shiFQY, 1);
             values.put(FIELD_prgName, "FZXD002");
-            values.put(FIELD_crtDay, new CommonFunction().getCurrentDateTime());
-            values.put(FIELD_updDay, new CommonFunction().getCurrentDateTime());
+            values.put(FIELD_crtDay, _.now());
+            values.put(FIELD_updDay, _.now());
 
-            database.insert(TABLE_NAME, null, values);
+            db.getDataBase().insert(TABLE_NAME, null, values);
         }
 
         public boolean checkGongYSMCisUsed(String[] str) {
             boolean result = false;
-            Cursor cursor = database.query(TABLE_NAME, null, FIELD_gongYSMC + "= ?", str, null, null, null, null);
+            Cursor cursor = db.getDataBase().query(TABLE_NAME, null, FIELD_gongYSMC + "= ?", str, null, null, null, null);
 
             /* 如果有重複的供應商名稱, 則返回true */
             if (cursor.getCount() > 0) {
