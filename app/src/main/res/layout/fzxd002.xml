@@ -16,19 +16,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/chuC"
-            android:id="@+id/button" />
+            android:id="@+id/myButton_save" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/xiaYB"
-            android:id="@+id/button2" />
+            android:id="@+id/myButton_next" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/fanH"
-            android:id="@+id/button3" />
+            android:id="@+id/myButton_back" />
     </LinearLayout>
 
     <TableLayout
@@ -51,8 +51,9 @@
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
-                android:layout_marginLeft="5dp" />
+                android:id="@+id/myEditText_gongYSMC"
+                android:layout_marginLeft="5dp"
+                android:inputType="text" />
         </TableRow>
 
         <TableRow
@@ -70,8 +71,9 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText2"
-                android:layout_marginLeft="5dp" />
+                android:id="@+id/myEditText_gongYSDZ"
+                android:layout_marginLeft="5dp"
+                android:inputType="text" />
         </TableRow>
 
         <TableRow
@@ -88,8 +90,9 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText3"
-                android:layout_marginLeft="5dp" />
+                android:id="@+id/myEditText_lianXRXM"
+                android:layout_marginLeft="5dp"
+                android:inputType="text" />
         </TableRow>
 
         <TableRow
@@ -106,8 +109,9 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText4"
-                android:layout_marginLeft="5dp" />
+                android:id="@+id/myEditText_lianXRDH"
+                android:layout_marginLeft="5dp"
+                android:inputType="text|number" />
         </TableRow>
 
         <TableRow
@@ -124,8 +128,9 @@
             <EditText
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText5"
-                android:layout_marginLeft="5dp" />
+                android:id="@+id/myEditText_beiZ"
+                android:layout_marginLeft="5dp"
+                android:inputType="text" />
         </TableRow>
     </TableLayout>
 </LinearLayout>

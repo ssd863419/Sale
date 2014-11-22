@@ -4,7 +4,8 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:id="@+id/content_fzxd001">
+    android:id="@+id/content_fzxd001"
+    style="@style/Padding_TOP10_LEFT10">
 
     <Button
         android:layout_width="wrap_content"
