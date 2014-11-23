@@ -30,4 +30,5 @@
         android:layout_height="wrap_content"
         android:text="@string/jinHD"
         android:id="@+id/myButton_jinHD" />
+
 </LinearLayout>

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -280,7 +281,6 @@ public class Main extends Activity {
     /* 選單: 進貨 的Fragment畫面 */
     public static class Menu_JinH extends Fragment implements Button.OnClickListener {
 
-
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.menu_jinh, container, false);
@@ -292,7 +292,6 @@ public class Main extends Activity {
 
         @Override
         public void onClick(View view) {
-
         }
     }
 

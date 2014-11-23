@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import java.util.Calendar;
@@ -27,20 +30,25 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     private Button mButton_save;
     private Button mButton_next;
     private Button mButton_back;
+    private ImageButton mButton_addphone;
     private EditText mEditText_gongYSMC;    // 供應商名稱
     private EditText mEditText_gongYSDZ;    // 供應商地址
     private EditText mEditText_lianXRXM;    // 聯繫人姓名
     private EditText mEditText_lianXRDH;    // 聯繫人電話
+    private EditText mEditText_lianXRDH2;    // 聯繫人電話2
+    private EditText mEditText_lianXRDH3;    // 聯繫人電話3
     private EditText mEditText_beiZ;        // 備註
+    private TableRow mTableRow1;            //用來隱藏顯示聯繫人電話欄2
+    private TableRow mTableRow2;            //用來隱藏顯示聯繫人電話欄3
     private FragmentManager fragmentManager;
     private FZXD001 fzxd001;
-    private MyDbHelper myDbHelper;
+    private Db db;
+    SQLiteDatabase database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fzxd002, container, false);
         initView(v);
-        myDbHelper.init();
 
         return v;
     }
@@ -49,21 +57,30 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         mButton_save = (Button) view.findViewById(R.id.myButton_save);
         mButton_next = (Button) view.findViewById(R.id.myButton_next);
         mButton_back = (Button) view.findViewById(R.id.myButton_back);
+        mButton_addphone = (ImageButton) view.findViewById(R.id.myButton_addphone);
         mEditText_gongYSMC = (EditText) view.findViewById(R.id.myEditText_gongYSMC);
         mEditText_gongYSDZ = (EditText) view.findViewById(R.id.myEditText_gongYSDZ);
         mEditText_lianXRXM = (EditText) view.findViewById(R.id.myEditText_lianXRXM);
         mEditText_lianXRDH = (EditText) view.findViewById(R.id.myEditText_lianXRDH);
+        mEditText_lianXRDH2 = (EditText) view.findViewById(R.id.myEditText_lianXRDH2);
+        mEditText_lianXRDH3 = (EditText) view.findViewById(R.id.myEditText_lianXRDH3);
         mEditText_beiZ = (EditText) view.findViewById(R.id.myEditText_beiZ);
+        mTableRow1 = (TableRow) view.findViewById(R.id.myTableRow1);
+        mTableRow2 = (TableRow) view.findViewById(R.id.myTableRow2);
         fragmentManager = getFragmentManager();
         fzxd001 = new FZXD001();
-        myDbHelper = new MyDbHelper();
+        db = new Db(getActivity());
+        database = db.getWritableDatabase();
 
         mButton_save.setOnClickListener(this);
         mButton_next.setOnClickListener(this);
         mButton_back.setOnClickListener(this);
+        mButton_addphone.setOnClickListener(this);
 
         mButton_save.setEnabled(false);     // 剛進入畫面時, 儲存鈕無效
         mButton_next.setEnabled(false);     // 剛進入畫面時, 下一筆鈕無效
+        mTableRow1.setVisibility(View.GONE);    // 剛進入畫面時, 聯繫人電話2的欄位隱藏
+        mTableRow2.setVisibility(View.GONE);    // 剛進入畫面時, 聯繫人電話3的欄位隱藏
         mEditText_gongYSMC.addTextChangedListener(buttonState);
     }
 
@@ -75,8 +92,9 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
             case R.id.myButton_save:
                 // TODO 後面需要存入店面檔的sn, 那是在有帳號密碼登錄畫面+上傳雲端硬盤的操作之後
                 // TODO 後面須考量資料庫版本更新的操作
+
                 String[] temp = {mEditText_gongYSMC.getText().toString()};
-                if (myDbHelper.checkGongYSMCisUsed(temp)) {
+                if (checkGongYSMCisUsed(temp)) {
                     /* 如果已存在供應商名稱 */
                     new AlertDialog.Builder(this.getActivity())
                         .setMessage(R.string.gongYSMCCF)
@@ -97,11 +115,13 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                         public void run() {
                             try {
                                 long startTime = Calendar.getInstance().getTimeInMillis();
-                                myDbHelper.insert(
+                                insert(
                                         mEditText_gongYSMC.getText().toString(),
                                         mEditText_gongYSDZ.getText().toString(),
                                         mEditText_lianXRXM.getText().toString(),
                                         mEditText_lianXRDH.getText().toString(),
+                                        mEditText_lianXRDH2.getText().toString(),
+                                        mEditText_lianXRDH3.getText().toString(),
                                         mEditText_beiZ.getText().toString()
                                 );
                                 long endTime = Calendar.getInstance().getTimeInMillis();
@@ -134,6 +154,10 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
             case R.id.myButton_back:
                 transaction.replace(R.id.content, fzxd001).commit();
                 break;
+
+            case R.id.myButton_addphone:
+                mTableRow1.setVisibility(View.VISIBLE);
+                mTableRow2.setVisibility(View.VISIBLE);
         }
     }
 
@@ -158,64 +182,35 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         }
     };
 
-    private class MyDbHelper {
-        private Db db = new Db(getActivity());
-        private static final String TABLE_NAME = "fuZXD003";
-        private static final String _ID = "_id";
-        private static final String FIELD_gongYSMC = "gongYSMC";
-        private static final String FIELD_gongYSDZ = "gongYSDZ";
-        private static final String FIELD_lianLRXM = "lianLRXM";
-        private static final String FIELD_lianLRDH  = "lianLRDH";
-        private static final String FIELD_beiZ  = "beiZ";
-        private static final String FIELD_shiFQY  = "shiFQY";
-        private static final String FIELD_prgName  = "prgName";
-        private static final String FIELD_crtDay  = "crtDay";
-        private static final String FIELD_updDay  = "updDay";
+    public long insert(String gongYSMC, String gongYSDZ, String lianXRXM,
+                       String lianXRDH, String lianXRDH2, String lianXRDH3, String beiZ) {
 
-        private String sql = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" +
-                _ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                FIELD_gongYSMC + " TEXT NOT NULL, " +
-                FIELD_gongYSDZ + " TEXT NOT NULL, " +
-                FIELD_lianLRXM + " TEXT NOT NULL, " +
-                FIELD_lianLRDH + " TEXT NOT NULL, " +
-                FIELD_beiZ + " TEXT NOT NULL, " +
-                FIELD_shiFQY + " INTEGER NOT NULL, " +
-                FIELD_prgName + " TEXT NOT NULL, " +
-                FIELD_crtDay + " TEXT NOT NULL, " +
-                FIELD_updDay + " TEXT NOT NULL" +
-                ")";
+        ContentValues values = new ContentValues();
+        values.put("gongYSMC", gongYSMC);
+        values.put("gongYSDZ", gongYSDZ);
+        values.put("lianLRXM", lianXRXM);
+        values.put("lianLRDH", lianXRDH);
+        values.put("lianLRDH2", lianXRDH2);
+        values.put("lianLRDH3", lianXRDH3);
+        values.put("beiZ", beiZ);
+        values.put("shiFQY", 1);
+        values.put("prgName", "FZXD002");
+        values.put("crtDay", _.now());
+        values.put("updDay", _.now());
 
-        private void init() {
-            db.setSql(sql);
-        }
+        long id = database.insert("fuZXD003", null, values);
+        return id;
+    }
 
-        public void insert(String gongYSMC, String gongYSDZ, String lianXRXM,
-                           String lianXRDH, String beiZ) {
-
-            ContentValues values = new ContentValues();
-            values.put(FIELD_gongYSMC, gongYSMC);
-            values.put(FIELD_gongYSDZ, gongYSDZ);
-            values.put(FIELD_lianLRXM, lianXRXM);
-            values.put(FIELD_lianLRDH, lianXRDH);
-            values.put(FIELD_beiZ, beiZ);
-            values.put(FIELD_shiFQY, 1);
-            values.put(FIELD_prgName, "FZXD002");
-            values.put(FIELD_crtDay, _.now());
-            values.put(FIELD_updDay, _.now());
-
-            db.getDataBase().insert(TABLE_NAME, null, values);
-        }
-
-        public boolean checkGongYSMCisUsed(String[] str) {
-            boolean result = false;
-            Cursor cursor = db.getDataBase().query(TABLE_NAME, null, FIELD_gongYSMC + "= ?", str, null, null, null, null);
+    public boolean checkGongYSMCisUsed(String[] str) {
+        boolean result = false;
+        Cursor cursor = database.query("fuZXD003", null, "gongYSMC = ?", str, null, null, null, null);
 
             /* 如果有重複的供應商名稱, 則返回true */
-            if (cursor.getCount() > 0) {
-                result = true;
-            }
-            cursor.close();
-            return result;
+        if (cursor.getCount() > 0) {
+            result = true;
         }
+        cursor.close();
+        return result;
     }
 }

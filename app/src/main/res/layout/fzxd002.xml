@@ -34,6 +34,7 @@
     <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/myTableLayout"
         android:layout_marginTop="30dp">
 
         <TableRow
@@ -111,7 +112,57 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/myEditText_lianXRDH"
                 android:layout_marginLeft="5dp"
-                android:inputType="text|number" />
+                android:inputType="phone" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/myButton_addphone"
+                android:background="@android:drawable/ic_input_add" />
+
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/myTableRow1"
+            style="@style/Padding_TOP5_BOTTOM5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lianXRDH"
+                android:id="@+id/textView7"
+                android:textColor="#00000000" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/myEditText_lianXRDH2"
+                android:layout_marginLeft="5dp"
+                android:inputType="phone" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/myTableRow2"
+            style="@style/Padding_TOP5_BOTTOM5">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/lianXRDH"
+                android:id="@+id/textView8"
+                android:textColor="#00000000" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/myEditText_lianXRDH3"
+                android:layout_marginLeft="5dp"
+                android:inputType="phone" />
         </TableRow>
 
         <TableRow
@@ -132,5 +183,6 @@
                 android:layout_marginLeft="5dp"
                 android:inputType="text" />
         </TableRow>
+
     </TableLayout>
 </LinearLayout>
