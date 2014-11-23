@@ -11,13 +11,9 @@ public class Db extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "fuZXD.db";
     private static final int DATABASE_VERSION = 1;
 
-    /* 定義table names */
-    private static final String TABLE_fuZXD003 = "fuZXD003";
-
-
     /* 這邊放所有開啟table的sql */
     // table fuZXD003
-    private static final String CREATE_TABLE_fuZXD003 = "CREATE TABLE IF NOT EXISTS " + TABLE_fuZXD003 + "(" +
+    private static final String CREATE_TABLE_fuZXD003 = "CREATE TABLE IF NOT EXISTS " + "fuZXD003" + "(" +
             "_ID" + " INTEGER PRIMARY KEY AUTOINCREMENT," +
             "gongYSMC" + " TEXT NOT NULL, " +
             "gongYSDZ" + " TEXT NOT NULL, " +
@@ -43,7 +39,7 @@ public class Db extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_fuZXD003);
+        db.execSQL("DROP TABLE IF EXISTS fuZXD003");
         onCreate(db);
     }
 
