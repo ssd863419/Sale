@@ -1,4 +1,17 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.2'
+        classpath 'me.champeau.gradle:gradle-groovy-android-plugin:0.3.0' // for Groovy
+    }
+}
+
+
 apply plugin: 'com.android.application'
+
+apply plugin: 'me.champeau.gradle.groovy-android' // for Groovy
 
 android {
     compileSdkVersion 20
@@ -21,4 +34,5 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'org.codehaus.groovy:groovy:2.4.0-beta-3' // for Groovy
 }
