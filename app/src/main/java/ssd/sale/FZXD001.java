@@ -57,6 +57,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         if (view == mButton_XinZ) {
             transaction.replace(R.id.content, fzxd002).commit();
         }
+        // ooxx 2
     }
 
     private List<ClipData.Item> getDate() {
