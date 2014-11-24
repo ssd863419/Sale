@@ -48,6 +48,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         db = new Db(getActivity());
         database = db.getReadableDatabase();
 
+        // ooxxx 1
     }
 
     @Override
