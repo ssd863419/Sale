@@ -44,7 +44,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     private FZXD001 fzxd001;
     private Db db;
     SQLiteDatabase database;
-    long _id = -1;                          // 用來判斷目前是處於修改資料, 或新增資料(-1)
+    private long _id = -1;                          // 用來判斷目前是處於修改資料, 或新增資料(-1)
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -93,21 +93,19 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
             case R.id.myButton_save:
                 // TODO 後面需要存入店面檔的sn, 那是在有帳號密碼登錄畫面+上傳雲端硬盤的操作之後
 
-                String[] temp= new String[]{mEditText_gongYSMC.getText().toString()};
+                long old_id = getGongYSMC_ID(new String[]{mEditText_gongYSMC.getText().toString()});
 
-                /* 供應商重名 */
-                if (checkGongYSMCisUsed(temp)) {
-
+                if (old_id > -1 && old_id != _id) {     // 供應商重名 且 不等於目前編輯的_id
                     new AlertDialog.Builder(this.getActivity())
-                        .setMessage(R.string.gongYSMCCF)
-                        .setPositiveButton(R.string.queR, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //return;
-                            }
-                        }).create().show();
+                            .setMessage(R.string.gongYSMCCF)
+                            .setPositiveButton(R.string.queR, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //return;
+                                }
+                            }).create().show();
 
-                } else {
+                } else if (_id == -1) {                 // insert
                     final ProgressDialog dialog = ProgressDialog.show(
                             this.getActivity(), null, null, true);
 
@@ -117,31 +115,49 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                             try {
                                 long startTime = Calendar.getInstance().getTimeInMillis();
 
-                                /* _id == -1 代表新增資料 */
-                                if (_id == -1) {
-                                    _id = insert(
-                                            mEditText_gongYSMC.getText().toString(),
-                                            mEditText_gongYSDZ.getText().toString(),
-                                            mEditText_lianXRXM.getText().toString(),
-                                            mEditText_lianXRDH.getText().toString(),
-                                            mEditText_lianXRDH2.getText().toString(),
-                                            mEditText_lianXRDH3.getText().toString(),
-                                            mEditText_beiZ.getText().toString()
-                                    );
+                                _id = insert(
+                                        mEditText_gongYSMC.getText().toString(),
+                                        mEditText_gongYSDZ.getText().toString(),
+                                        mEditText_lianXRXM.getText().toString(),
+                                        mEditText_lianXRDH.getText().toString(),
+                                        mEditText_lianXRDH2.getText().toString(),
+                                        mEditText_lianXRDH3.getText().toString(),
+                                        mEditText_beiZ.getText().toString()
+                                );
 
-                                /* _id != -1 代表更新資料 */
-                                } else {
-                                    update(
-                                            _id,
-                                            mEditText_gongYSMC.getText().toString(),
-                                            mEditText_gongYSDZ.getText().toString(),
-                                            mEditText_lianXRXM.getText().toString(),
-                                            mEditText_lianXRDH.getText().toString(),
-                                            mEditText_lianXRDH2.getText().toString(),
-                                            mEditText_lianXRDH3.getText().toString(),
-                                            mEditText_beiZ.getText().toString()
-                                    );
-                                }
+                                long endTime = Calendar.getInstance().getTimeInMillis();
+                                Thread.sleep((endTime - startTime < 500) ? 500 : 0);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            dialog.dismiss();
+                        }
+                    }).start();
+
+                    Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
+                    mButton_next.setEnabled(true);      // 下一筆鈕enable
+                    mButton_save.setEnabled(false);     // 儲存鈕disable
+
+                } else {                                //update
+                    final ProgressDialog dialog = ProgressDialog.show(
+                            this.getActivity(), null, null, true);
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                long startTime = Calendar.getInstance().getTimeInMillis();
+
+                                update(
+                                        _id,
+                                        mEditText_gongYSMC.getText().toString(),
+                                        mEditText_gongYSDZ.getText().toString(),
+                                        mEditText_lianXRXM.getText().toString(),
+                                        mEditText_lianXRDH.getText().toString(),
+                                        mEditText_lianXRDH2.getText().toString(),
+                                        mEditText_lianXRDH3.getText().toString(),
+                                        mEditText_beiZ.getText().toString()
+                                );
 
                                 long endTime = Calendar.getInstance().getTimeInMillis();
                                 Thread.sleep((endTime - startTime < 500) ? 500 : 0);
@@ -156,6 +172,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                     mButton_next.setEnabled(true);      // 下一筆鈕enable
                     mButton_save.setEnabled(false);     // 儲存鈕disable
                 }
+
                 break;
 
             case R.id.myButton_next:
@@ -236,17 +253,16 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         return database.update("fuZXD003", values, "_ID = ?", new String[]{String.valueOf(key_id)});
     }
 
-    public boolean checkGongYSMCisUsed(String[] str) {
-        boolean result = false;
+    public long getGongYSMC_ID(String[] str) {
+        long old_ID = -1;
         Cursor cursor = database.query(
                 "fuZXD003", null, "gongYSMC = ?", str, null, null, null, null);
 
-        /* 如果供應商重名 */
+        /* 如果取得供應商ID */
         if (cursor.getCount() > 0) {
-            result = true;
+            old_ID = cursor.getColumnIndex("_id");
         }
-        cursor.close();
 
-        return result;
+        return old_ID;
     }
 }
