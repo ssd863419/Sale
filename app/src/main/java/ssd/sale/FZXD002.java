@@ -93,12 +93,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
             case R.id.myButton_save:
                 // TODO 後面需要存入店面檔的sn, 那是在有帳號密碼登錄畫面+上傳雲端硬盤的操作之後
 
-                String[] temp;
-                if (_id == -1) {
-                    temp = new String[]{mEditText_gongYSMC.getText().toString()};
-                } else {
-                    temp = new String[]{mEditText_gongYSMC.getText().toString(), String.valueOf(_id)};
-                }
+                String[] temp= new String[]{mEditText_gongYSMC.getText().toString()};
 
                 /* 供應商重名 */
                 if (checkGongYSMCisUsed(temp)) {
@@ -153,10 +148,10 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
+                            dialog.dismiss();
                         }
-                    });
+                    }).start();
 
-                    dialog.dismiss();
                     Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
                     mButton_next.setEnabled(true);      // 下一筆鈕enable
                     mButton_save.setEnabled(false);     // 儲存鈕disable
@@ -243,16 +238,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
 
     public boolean checkGongYSMCisUsed(String[] str) {
         boolean result = false;
-        Cursor cursor;
-
-        if (_id == -1) {
-            cursor = database.query(
-                    "fuZXD003", null, "gongYSMC = ?", str, null, null, null, null);
-
-        } else {
-            cursor = database.query(
-                    "fuZXD003", null, "gonYSMC = ? and _ID != ?", str, null, null, null, null);
-        }
+        Cursor cursor = database.query(
+                "fuZXD003", null, "gongYSMC = ?", str, null, null, null, null);
 
         /* 如果供應商重名 */
         if (cursor.getCount() > 0) {
