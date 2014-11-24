@@ -44,6 +44,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     private FZXD001 fzxd001;
     private Db db;
     SQLiteDatabase database;
+    long _id = -1;                          // 用來判斷目前是處於修改資料, 或新增資料(-1)
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -91,11 +92,17 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         switch (view.getId()) {
             case R.id.myButton_save:
                 // TODO 後面需要存入店面檔的sn, 那是在有帳號密碼登錄畫面+上傳雲端硬盤的操作之後
-                // TODO 後面須考量資料庫版本更新的操作
 
-                String[] temp = {mEditText_gongYSMC.getText().toString()};
+                String[] temp;
+                if (_id == -1) {
+                    temp = new String[]{mEditText_gongYSMC.getText().toString()};
+                } else {
+                    temp = new String[]{mEditText_gongYSMC.getText().toString(), String.valueOf(_id)};
+                }
+
+                /* 供應商重名 */
                 if (checkGongYSMCisUsed(temp)) {
-                    /* 如果已存在供應商名稱 */
+
                     new AlertDialog.Builder(this.getActivity())
                         .setMessage(R.string.gongYSMCCF)
                         .setPositiveButton(R.string.queR, new DialogInterface.OnClickListener() {
@@ -106,7 +113,6 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                         }).create().show();
 
                 } else {
-                    /* 如果沒有存在重複的供應商名稱 */
                     final ProgressDialog dialog = ProgressDialog.show(
                             this.getActivity(), null, null, true);
 
@@ -115,31 +121,46 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                         public void run() {
                             try {
                                 long startTime = Calendar.getInstance().getTimeInMillis();
-                                insert(
-                                        mEditText_gongYSMC.getText().toString(),
-                                        mEditText_gongYSDZ.getText().toString(),
-                                        mEditText_lianXRXM.getText().toString(),
-                                        mEditText_lianXRDH.getText().toString(),
-                                        mEditText_lianXRDH2.getText().toString(),
-                                        mEditText_lianXRDH3.getText().toString(),
-                                        mEditText_beiZ.getText().toString()
-                                );
+
+                                /* _id == -1 代表新增資料 */
+                                if (_id == -1) {
+                                    _id = insert(
+                                            mEditText_gongYSMC.getText().toString(),
+                                            mEditText_gongYSDZ.getText().toString(),
+                                            mEditText_lianXRXM.getText().toString(),
+                                            mEditText_lianXRDH.getText().toString(),
+                                            mEditText_lianXRDH2.getText().toString(),
+                                            mEditText_lianXRDH3.getText().toString(),
+                                            mEditText_beiZ.getText().toString()
+                                    );
+
+                                /* _id != -1 代表更新資料 */
+                                } else {
+                                    update(
+                                            _id,
+                                            mEditText_gongYSMC.getText().toString(),
+                                            mEditText_gongYSDZ.getText().toString(),
+                                            mEditText_lianXRXM.getText().toString(),
+                                            mEditText_lianXRDH.getText().toString(),
+                                            mEditText_lianXRDH2.getText().toString(),
+                                            mEditText_lianXRDH3.getText().toString(),
+                                            mEditText_beiZ.getText().toString()
+                                    );
+                                }
+
                                 long endTime = Calendar.getInstance().getTimeInMillis();
                                 Thread.sleep((endTime - startTime < 500) ? 500 : 0);
-
-                                dialog.dismiss();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
                         }
-                    }).start();
+                    });
 
-                    Toast.makeText(this.getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
-
+                    dialog.dismiss();
+                    Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
                     mButton_next.setEnabled(true);      // 下一筆鈕enable
                     mButton_save.setEnabled(false);     // 儲存鈕disable
                 }
-
                 break;
 
             case R.id.myButton_next:
@@ -148,6 +169,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 mEditText_lianXRXM.setText("");
                 mEditText_lianXRDH.setText("");
                 mEditText_beiZ.setText("");
+                _id = -1;
 
                 break;
 
@@ -198,19 +220,46 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         values.put("crtDay", _.now());
         values.put("updDay", _.now());
 
-        long id = database.insert("fuZXD003", null, values);
-        return id;
+        _id = database.insert("fuZXD003", null, values);
+        return _id;
+    }
+
+    public long update(long key_id, String gongYSMC, String gongYSDZ, String lianXRXM,
+                       String lianXRDH, String lianXRDH2, String lianXRDH3, String beiZ) {
+
+        ContentValues values = new ContentValues();
+        values.put("gongYSMC", gongYSMC);
+        values.put("gongYSDZ", gongYSDZ);
+        values.put("lianLRXM", lianXRXM);
+        values.put("lianLRDH", lianXRDH);
+        values.put("lianLRDH2", lianXRDH2);
+        values.put("lianLRDH3", lianXRDH3);
+        values.put("beiZ", beiZ);
+        values.put("shiFQY", 1);
+        values.put("prgName", "FZXD002");
+        values.put("updDay", _.now());
+        return database.update("fuZXD003", values, "_ID = ?", new String[]{String.valueOf(key_id)});
     }
 
     public boolean checkGongYSMCisUsed(String[] str) {
         boolean result = false;
-        Cursor cursor = database.query("fuZXD003", null, "gongYSMC = ?", str, null, null, null, null);
+        Cursor cursor;
 
-            /* 如果有重複的供應商名稱, 則返回true */
+        if (_id == -1) {
+            cursor = database.query(
+                    "fuZXD003", null, "gongYSMC = ?", str, null, null, null, null);
+
+        } else {
+            cursor = database.query(
+                    "fuZXD003", null, "gonYSMC = ? and _ID != ?", str, null, null, null, null);
+        }
+
+        /* 如果供應商重名 */
         if (cursor.getCount() > 0) {
             result = true;
         }
         cursor.close();
+
         return result;
     }
 }
