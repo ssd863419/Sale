@@ -250,6 +250,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         values.put("shiFQY", 1);
         values.put("prgName", "FZXD002");
         values.put("updDay", _.now());
+
         return database.update("fuZXD003", values, "_ID = ?", new String[]{String.valueOf(key_id)});
     }
 
@@ -260,8 +261,10 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
 
         /* 如果取得供應商ID */
         if (cursor.getCount() > 0) {
-            old_ID = cursor.getColumnIndex("_id");
+            cursor.moveToFirst();
+            old_ID = cursor.getInt(0);
         }
+        cursor.close();
 
         return old_ID;
     }
