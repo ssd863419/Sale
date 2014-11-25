@@ -1,5 +1,7 @@
 package ssd.sale
 
+import android.database.Cursor
+
 public class Sql {
 
     public static final String CREATE_TABLE_fuZXD003 = """
@@ -20,4 +22,29 @@ public class Sql {
     """;
 
 
+    public static List parseCursor(Cursor cursor) {
+        def result = []
+        def cols = cursor.getColumnNames()
+        while (cursor.moveToNext()) {
+            def row = [:]
+            cols.eachWithIndex { col, i ->
+                def t = cursor.getType(i)
+                if (t == 4) { // FIELD_TYPE_BLOB
+                    row[col] = cursor.getBlob(i)
+                } else if (t == 2) { // FIELD_TYPE_FLOAT
+                    row[col] = cursor.getFloat(i)
+                } else if (t == 1) { // FIELD_TYPE_INTEGER
+                    row[col] = cursor.getDouble(i)
+                } else if (t == 0) { // FIELD_TYPE_NULL
+                    row[col] = null
+                } else if (t == 3) { // FIELD_TYPE_STRING
+                    row[col] = cursor.getString(i)
+                } else {
+                    row[col] = 'huh?'
+                }
+            }
+            result << row
+        }
+        return result.asList()
+    }
 }
