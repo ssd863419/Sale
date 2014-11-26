@@ -180,6 +180,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 mEditText_gongYSDZ.setText("");
                 mEditText_lianXRXM.setText("");
                 mEditText_lianXRDH.setText("");
+                mEditText_lianXRDH2.setText("");
+                mEditText_lianXRDH3.setText("");
                 mEditText_beiZ.setText("");
                 _id = -1;
 
@@ -190,8 +192,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 break;
 
             case R.id.myButton_addphone:
-                mTableRow1.setVisibility(View.VISIBLE);
-                mTableRow2.setVisibility(View.VISIBLE);
+                mTableRow1.setVisibility(View.VISIBLE);     // 隱藏聯繫人電話輸入框2
+                mTableRow2.setVisibility(View.VISIBLE);     // 隱藏聯繫人電話輸入框3
         }
     }
 
@@ -232,8 +234,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         values.put("crtDay", _.now());
         values.put("updDay", _.now());
 
-        _id = database.insert("fuZXD003", null, values);
-        return _id;
+        return database.insert("fuZXD003", null, values);
+
     }
 
     public long update(long key_id, String gongYSMC, String gongYSDZ, String lianXRXM,

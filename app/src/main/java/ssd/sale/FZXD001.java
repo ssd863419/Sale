@@ -1,6 +1,5 @@
 package ssd.sale;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
@@ -11,7 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +23,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
     private Button mButton_XinZ;
     private FZXD002 fzxd002;
     private FragmentManager fragmentManager;
+    private SimpleAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,24 +44,29 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         fragmentManager = getFragmentManager();
         mButton_XinZ.setOnClickListener(this);
 
-        // Sql.parseCursor 範例
         Db db = new Db(getActivity());
         SQLiteDatabase database = db.getWritableDatabase();
         Cursor cursor = database.query("fuZXD003", null, null, null, null, null, null, null);
-        List list = Sql.parseCursor(cursor);
-        // for 1
-        for (Object o: list) {
-            Map m = (Map) o;
-            System.out.println(m);
-            System.out.println(m.get("gongYSMC"));
-            System.out.println("-----");
-        }
 
-        // for 2
-//        for (int i = 0; i < list.size(); i++) {
-//            Map m = (Map) list.get(i);
-//            System.out.println(m);
-//        }
+        List list = Sql.parseCursor(cursor);
+
+        String[] from = new String[] {
+                "gongYSMC",
+                "lianLRDH",
+                "lianLRDH2",
+                "lianLRDH3"
+        };
+
+        int[] to = new int[] {
+                R.id.myTextView_gongYSMC,
+                R.id.myTextView_lianXRDH,
+                R.id.myTextView_lianXRDH2,
+                R.id.myTextView_lianXRDH3
+        };
+        adapter = new SimpleAdapter(getActivity(), list, R.layout.fzxd001_listview, from, to);
+
+        setListAdapter(adapter);
+
 
     }
 
