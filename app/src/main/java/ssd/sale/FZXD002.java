@@ -78,11 +78,19 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         mButton_back.setOnClickListener(this);
         mButton_addphone.setOnClickListener(this);
 
-        mButton_save.setEnabled(false);     // 剛進入畫面時, 儲存鈕無效
-        mButton_next.setEnabled(false);     // 剛進入畫面時, 下一筆鈕無效
         mTableRow1.setVisibility(View.GONE);    // 剛進入畫面時, 聯繫人電話2的欄位隱藏
         mTableRow2.setVisibility(View.GONE);    // 剛進入畫面時, 聯繫人電話3的欄位隱藏
+
         mEditText_gongYSMC.addTextChangedListener(buttonState);
+        mButton_next.setEnabled(false);         // 剛進入畫面時, 下一筆鈕無效
+
+        /* 有_id, 處於編輯狀態 */
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            _id = Long.valueOf(bundle.getString("_id"));
+            query(new String[]{String.valueOf(_id)});
+        }
+
     }
 
     @Override
@@ -136,7 +144,6 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
 
                     Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
                     mButton_next.setEnabled(true);      // 下一筆鈕enable
-                    mButton_save.setEnabled(false);     // 儲存鈕disable
 
                 } else {                                //update
                     final ProgressDialog dialog = ProgressDialog.show(
@@ -170,7 +177,6 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
 
                     Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
                     mButton_next.setEnabled(true);      // 下一筆鈕enable
-                    mButton_save.setEnabled(false);     // 儲存鈕disable
                 }
 
                 break;
@@ -192,8 +198,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 break;
 
             case R.id.myButton_addphone:
-                mTableRow1.setVisibility(View.VISIBLE);     // 隱藏聯繫人電話輸入框2
-                mTableRow2.setVisibility(View.VISIBLE);     // 隱藏聯繫人電話輸入框3
+                mTableRow1.setVisibility(View.VISIBLE);     // 顯示聯繫人電話輸入框2
+                mTableRow2.setVisibility(View.VISIBLE);     // 顯示聯繫人電話輸入框3
         }
     }
 
@@ -205,12 +211,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            /* 供應商名稱無資料, 則儲存鈕disable */
-            if (s.toString().equals("")) {
-                mButton_save.setEnabled(false);
-            } else {
-                mButton_save.setEnabled(true);
-            }
+             /* 供應商名稱無資料, 則儲存鈕disable */
+            mButton_save.setEnabled(s.length() > 0);
         }
 
         @Override
@@ -235,7 +237,6 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         values.put("updDay", _.now());
 
         return database.insert("fuZXD003", null, values);
-
     }
 
     public long update(long key_id, String gongYSMC, String gongYSDZ, String lianXRXM,
@@ -269,5 +270,28 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         cursor.close();
 
         return old_ID;
+    }
+
+    public void query(String[] str) {
+        Cursor cursor = database.query("fuZXD003", null, "_ID = ?", str, null, null, null, null);
+        if (cursor.getCount() > 0) {
+            cursor.moveToFirst();
+            mEditText_gongYSMC.setText(cursor.getString(1));        // 供應商名稱
+            mEditText_gongYSDZ.setText(cursor.getString(2));        // 供應商地址
+            mEditText_lianXRXM.setText(cursor.getString(3));        // 聯繫人姓名
+            mEditText_lianXRDH.setText(cursor.getString(4));        // 聯繫人電話
+
+            if (!cursor.getString(5).equals("")) {                  // 聯繫人電話2
+                mTableRow1.setVisibility(View.VISIBLE);
+                mEditText_lianXRDH2.setText(cursor.getString(5));
+            }
+
+            if (!cursor.getString(6).equals("")) {                  // 聯繫人電話3
+                mTableRow2.setVisibility(View.VISIBLE);
+                mEditText_lianXRDH3.setText(cursor.getString(6));
+            }
+
+            mEditText_beiZ.setText(cursor.getString(7));            // 備註
+        }
     }
 }

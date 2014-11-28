@@ -34,7 +34,7 @@ public class Sql {
                 } else if (t == 2) { // FIELD_TYPE_FLOAT
                     row[col] = cursor.getFloat(i)
                 } else if (t == 1) { // FIELD_TYPE_INTEGER
-                    row[col] = cursor.getDouble(i)
+                    row[col] = cursor.getInt(i)
                 } else if (t == 0) { // FIELD_TYPE_NULL
                     row[col] = null
                 } else if (t == 3) { // FIELD_TYPE_STRING

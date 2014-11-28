@@ -3,15 +3,16 @@ package ssd.sale;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
+import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.SimpleAdapter;
-import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,9 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
     private Button mButton_XinZ;
     private FZXD002 fzxd002;
     private FragmentManager fragmentManager;
-    private SimpleAdapter adapter;
+    private List list;
+    private Db db;
+    private SQLiteDatabase database;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,30 +47,12 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         fragmentManager = getFragmentManager();
         mButton_XinZ.setOnClickListener(this);
 
-        Db db = new Db(getActivity());
-        SQLiteDatabase database = db.getWritableDatabase();
-        Cursor cursor = database.query("fuZXD003", null, null, null, null, null, null, null);
-
-        List list = Sql.parseCursor(cursor);
-
-        String[] from = new String[] {
-                "gongYSMC",
-                "lianLRDH",
-                "lianLRDH2",
-                "lianLRDH3"
-        };
-
-        int[] to = new int[] {
-                R.id.myTextView_gongYSMC,
-                R.id.myTextView_lianXRDH,
-                R.id.myTextView_lianXRDH2,
-                R.id.myTextView_lianXRDH3
-        };
-        adapter = new SimpleAdapter(getActivity(), list, R.layout.fzxd001_listview, from, to);
-
+        db = new Db(getActivity());
+        database = db.getWritableDatabase();
+        Cursor cursor = database.query("fuZXD003", null, null, null, null, null, "gongYSMC", null);
+        list = Sql.parseCursor(cursor);
+        myBaseAdapter adapter = new myBaseAdapter(getActivity(), list);
         setListAdapter(adapter);
-
-
     }
 
     @Override
@@ -78,4 +63,94 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
             transaction.replace(R.id.content, fzxd002).commit();
         }
     }
+
+    static class ViewHolder {
+        public TextView mTextView_gongYSMC;
+        public TextView mTextView_lianXRDH;
+        public TextView mTextView_lianXRDH2;
+        public TextView mTextView_lianXRDH3;
+    }
+
+    public class myBaseAdapter extends BaseAdapter {
+        private LayoutInflater mInflater = null;
+
+        public myBaseAdapter(Context context, List list1) {
+            this.mInflater = LayoutInflater.from(context);
+            list = list1;
+        }
+
+        @Override
+        public int getCount() {
+            return list.size();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return position;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder = null;
+
+            if (convertView == null) {
+                holder = new ViewHolder();
+                convertView = mInflater.inflate(R.layout.fzxd001_item, null);
+                holder.mTextView_gongYSMC = (TextView) convertView.findViewById(
+                        R.id.myTextView_gongYSMC);
+                holder.mTextView_lianXRDH = (TextView) convertView.findViewById(
+                        R.id.myTextView_lianXRDH);
+                holder.mTextView_lianXRDH2 = (TextView) convertView.findViewById(
+                        R.id.myTextView_lianXRDH2);
+                holder.mTextView_lianXRDH3 = (TextView) convertView.findViewById(
+                        R.id.myTextView_lianXRDH3);
+
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+
+            try {
+                final Map map = (Map) list.get(position);
+                holder.mTextView_gongYSMC.setText(map.get("gongYSMC").toString());
+                holder.mTextView_lianXRDH.setText(map.get("lianLRDH").toString());
+
+                // 如果連繫人電話2沒資料, 則不顯示
+                if (map.get("lianLRDH2").toString().equals("")) {
+                    holder.mTextView_lianXRDH2.setVisibility(View.GONE);
+                } else {
+                    holder.mTextView_lianXRDH2.setText(map.get("lianLRDH2").toString());
+                }
+                // 如果連繫人電話3沒資料, 則不顯示
+                if (map.get("lianLRDH3").toString().equals("")) {
+                    holder.mTextView_lianXRDH3.setVisibility(View.GONE);
+                } else {
+                    holder.mTextView_lianXRDH3.setText(map.get("lianLRDH3").toString());
+                }
+
+                // 點擊 供應商名稱, 則跳至該供應商的編輯畫面
+                holder.mTextView_gongYSMC.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        FragmentTransaction transaction = fragmentManager.beginTransaction();
+                        transaction.replace(R.id.content, fzxd002);
+                        Bundle bundle = new Bundle();
+                        bundle.putString("_id", map.get("_ID").toString());
+                        fzxd002.setArguments(bundle);
+                        transaction.commit();
+                    }
+                });
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return convertView;
+        }
+    };
 }
