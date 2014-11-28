@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TableRow;
 import android.widget.Toast;
 
@@ -38,6 +39,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     private EditText mEditText_lianXRDH2;    // 聯繫人電話2
     private EditText mEditText_lianXRDH3;    // 聯繫人電話3
     private EditText mEditText_beiZ;        // 備註
+    private RadioButton mRB_checked;       // 是否啟用的啟用項
+    private RadioButton mRB_uncheck;       // 是否啟用的停用項
     private TableRow mTableRow1;            //用來隱藏顯示聯繫人電話欄2
     private TableRow mTableRow2;            //用來隱藏顯示聯繫人電話欄3
     private FragmentManager fragmentManager;
@@ -66,6 +69,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         mEditText_lianXRDH2 = (EditText) view.findViewById(R.id.myEditText_lianXRDH2);
         mEditText_lianXRDH3 = (EditText) view.findViewById(R.id.myEditText_lianXRDH3);
         mEditText_beiZ = (EditText) view.findViewById(R.id.myEditText_beiZ);
+        mRB_checked = (RadioButton) view.findViewById(R.id.myRB_check);
+        mRB_uncheck = (RadioButton) view.findViewById(R.id.myRB_uncheck);
         mTableRow1 = (TableRow) view.findViewById(R.id.myTableRow1);
         mTableRow2 = (TableRow) view.findViewById(R.id.myTableRow2);
         fragmentManager = getFragmentManager();
@@ -84,7 +89,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         mEditText_gongYSMC.addTextChangedListener(buttonState);
         mButton_next.setEnabled(false);         // 剛進入畫面時, 下一筆鈕無效
 
-        /* 有_id, 處於編輯狀態 */
+        /* 有_id, 代表處於編輯狀態 */
         Bundle bundle = getArguments();
         if (bundle != null) {
             _id = Long.valueOf(bundle.getString("_id"));
@@ -250,7 +255,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         values.put("lianLRDH2", lianXRDH2);
         values.put("lianLRDH3", lianXRDH3);
         values.put("beiZ", beiZ);
-        values.put("shiFQY", 1);
+        values.put("shiFQY", mRB_checked.isChecked() ? 1 : 0);
         values.put("prgName", "FZXD002");
         values.put("updDay", _.now());
 
@@ -292,6 +297,10 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
             }
 
             mEditText_beiZ.setText(cursor.getString(7));            // 備註
+
+            // 是否啟用
+            mRB_checked.setChecked(cursor.getInt(8) == 1);
+            mRB_uncheck.setChecked(cursor.getInt(8) == 0);
         }
     }
 }

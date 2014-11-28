@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -22,11 +25,13 @@ import java.util.Map;
  */
 public class FZXD001 extends ListFragment implements Button.OnClickListener {
     private Button mButton_XinZ;
+    private CheckBox mCheckBox;
     private FZXD002 fzxd002;
     private FragmentManager fragmentManager;
     private List list;
     private Db db;
     private SQLiteDatabase database;
+    private Cursor cursor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,16 +48,34 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
 
     private void initView(View view){
         mButton_XinZ = (Button) view.findViewById(R.id.myButton_add);
+        mCheckBox = (CheckBox) view.findViewById(R.id.myCheckBox);
         fzxd002 = new FZXD002();
         fragmentManager = getFragmentManager();
         mButton_XinZ.setOnClickListener(this);
 
         db = new Db(getActivity());
         database = db.getWritableDatabase();
-        Cursor cursor = database.query("fuZXD003", null, null, null, null, null, "gongYSMC", null);
+        cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[] {"1"},
+                null, null, "gongYSMC", null);
         list = Sql.parseCursor(cursor);
         myBaseAdapter adapter = new myBaseAdapter(getActivity(), list);
         setListAdapter(adapter);
+
+        mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (mCheckBox.isChecked()) {
+                    cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[] {"1"},
+                            null, null, "gongYSMC", null);
+                } else {
+                    cursor = database.query("fuZXD003", null, null, null, null, null, "gongYSMC", null);
+                }
+
+                list = Sql.parseCursor(cursor);
+                myBaseAdapter adapter = new myBaseAdapter(getActivity(), list);
+                setListAdapter(adapter);
+            }
+        });
     }
 
     @Override
@@ -145,6 +168,11 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                         transaction.commit();
                     }
                 });
+
+                /* 停用的資料, 顯示紅字 */
+                if (Integer.valueOf(map.get("shiFQY").toString()) == 0) {
+                    holder.mTextView_gongYSMC.setTextColor(getResources().getColor(R.color.red));
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

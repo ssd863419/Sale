@@ -49,5 +49,9 @@
     <string name="gongYSMCCF">供應商名稱重複</string>
     <string name="queR">確認</string>
     <string name="tianJ">Add</string>
+    <string name="qingSRYBDH">請輸入一筆電話</string>
+    <string name="qiY">啟用</string>
+    <string name="tingY">停用</string>
+    <string name="xianSQY">顯示啟用</string>
 
 </resources>

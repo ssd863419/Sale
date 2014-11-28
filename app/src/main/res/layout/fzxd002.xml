@@ -55,7 +55,8 @@
                 android:id="@+id/myEditText_gongYSMC"
                 android:layout_marginLeft="5dp"
                 android:inputType="text"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:maxLength="30" />
         </TableRow>
 
         <TableRow
@@ -75,7 +76,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/myEditText_gongYSDZ"
                 android:layout_marginLeft="5dp"
-                android:inputType="text" />
+                android:inputType="text"
+                android:maxLength="150" />
         </TableRow>
 
         <TableRow
@@ -94,7 +96,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/myEditText_lianXRXM"
                 android:layout_marginLeft="5dp"
-                android:inputType="text" />
+                android:inputType="text"
+                android:maxLength="30" />
         </TableRow>
 
         <TableRow
@@ -113,7 +116,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/myEditText_lianXRDH"
                 android:layout_marginLeft="5dp"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:hint="@string/qingSRYBDH"
+                android:maxLength="15" />
 
             <ImageButton
                 android:layout_width="wrap_content"
@@ -142,7 +147,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/myEditText_lianXRDH2"
                 android:layout_marginLeft="5dp"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:maxLength="15" />
         </TableRow>
 
         <TableRow
@@ -163,7 +169,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/myEditText_lianXRDH3"
                 android:layout_marginLeft="5dp"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:maxLength="15" />
         </TableRow>
 
         <TableRow
@@ -182,7 +189,41 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/myEditText_beiZ"
                 android:layout_marginLeft="5dp"
-                android:inputType="text" />
+                android:inputType="text"
+                android:maxLength="50" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/textView6"
+                android:textColor="#00000000" />
+
+            <RadioGroup
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/qiY"
+                    android:id="@+id/myRB_check"
+                    android:checked="true" />
+
+                <RadioButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/tingY"
+                    android:id="@+id/myRB_uncheck"
+                    android:textColor="@color/red" />
+            </RadioGroup>
+
         </TableRow>
 
     </TableLayout>
