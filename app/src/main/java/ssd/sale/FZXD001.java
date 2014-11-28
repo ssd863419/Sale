@@ -70,7 +70,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                 } else {
                     cursor = database.query("fuZXD003", null, null, null, null, null, "gongYSMC", null);
                 }
-
+                // 123
                 list = Sql.parseCursor(cursor);
                 myBaseAdapter adapter = new myBaseAdapter(getActivity(), list);
                 setListAdapter(adapter);
