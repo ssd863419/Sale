@@ -54,7 +54,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/myEditText_gongYSMC"
                 android:layout_marginLeft="5dp"
-                android:inputType="text" />
+                android:inputType="text"
+                android:singleLine="true" />
         </TableRow>
 
         <TableRow
