@@ -4,6 +4,7 @@ import android.database.Cursor
 
 public class Sql {
 
+    // TODO: 應該把所有 _ID 改成 _id 感覺順眼一點...
     public static final String CREATE_TABLE_fuZXD003 = """
             CREATE TABLE IF NOT EXISTS fuZXD003 (
             _ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -25,7 +26,9 @@ public class Sql {
     public static List parseCursor(Cursor cursor) {
         def result = []
         def cols = cursor.getColumnNames()
+
         while (cursor.moveToNext()) {
+            // TODO: 改一下 不要用標準的 Map, 用個自己寫的方便 getString getInt getFloat...
             def row = [:]
             cols.eachWithIndex { col, i ->
                 def t = cursor.getType(i)
