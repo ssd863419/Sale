@@ -58,8 +58,10 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         db = new Db(getActivity());
         database = db.getWritableDatabase();
 
-        cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[]{"1"},
-                null, null, "gongYSMC", null);
+        if (cursor == null) {
+            cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[]{"1"},
+                    null, null, "gongYSMC", null);
+        }
 
         list = Sql.parseCursor(cursor);
         Fzxd001Adapter adapter = new Fzxd001Adapter(getActivity(), list);
