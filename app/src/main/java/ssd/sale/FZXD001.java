@@ -146,8 +146,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                 }
 
                 // 點擊 供應商名稱, 則跳至該供應商的編輯畫面
-                holder.getTextView(R.id.myEditText_gongYSMC).setOnClickListener(new View.OnClickListener() {
-
+                holder.getTextView(R.id.myTextView_gongYSMC).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         FragmentTransaction transaction = fragmentManager.beginTransaction();

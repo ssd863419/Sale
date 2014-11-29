@@ -10,7 +10,7 @@ public class SqlMap extends HashMap {
 
     // 字串
     public String getString(String key) {
-        return (String) this.get(key);
+        return this.get(key).toString();
     }
 
     // 整數 short 2 / int 4 / long 8
