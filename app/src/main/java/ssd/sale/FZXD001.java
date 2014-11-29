@@ -172,7 +172,10 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                 /* 停用的資料, 顯示紅字 */
                 if (Integer.valueOf(map.get("shiFQY").toString()) == 0) {
                     holder.mTextView_gongYSMC.setTextColor(getResources().getColor(R.color.red));
+                } else {
+                    holder.mTextView_gongYSMC.setTextColor(getResources().getColor(R.color.black));
                 }
+
 
             } catch (Exception e) {
                 e.printStackTrace();
