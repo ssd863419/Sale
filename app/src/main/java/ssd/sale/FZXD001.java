@@ -14,11 +14,13 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
 import java.util.Map;
+
+import ssd.util.Db;
+import ssd.util.Sql;
 
 /**
  * Created by Administrator on 2014/11/15.
@@ -55,7 +57,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
 
         db = new Db(getActivity());
         database = db.getWritableDatabase();
-        cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[] {"1"},
+        cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[]{"1"},
                 null, null, "gongYSMC", null);
         list = Sql.parseCursor(cursor);
         myBaseAdapter adapter = new myBaseAdapter(getActivity(), list);
@@ -65,7 +67,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (mCheckBox.isChecked()) {
-                    cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[] {"1"},
+                    cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[]{"1"},
                             null, null, "gongYSMC", null);
                 } else {
                     cursor = database.query("fuZXD003", null, null, null, null, null, "gongYSMC", null);

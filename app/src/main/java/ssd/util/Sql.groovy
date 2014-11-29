@@ -1,4 +1,4 @@
-package ssd.sale
+package ssd.util
 
 import android.database.Cursor
 

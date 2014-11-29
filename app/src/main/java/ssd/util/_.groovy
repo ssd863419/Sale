@@ -1,4 +1,4 @@
-package ssd.sale;
+package ssd.util;
 
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
