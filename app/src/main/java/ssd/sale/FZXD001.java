@@ -14,12 +14,17 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
 import ssd.util.Db;
-import ssd.util.MyList;
-import ssd.util.MyMap;
+import ssd.util.SqlList;
+import ssd.util.SqlMap;
 import ssd.util.Sql;
+import ssd.util.ViewMap;
+import ssd.util._;
 
 /**
  * Created by Administrator on 2014/11/15.
@@ -29,7 +34,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
     private CheckBox mCheckBox;
     private FZXD002 fzxd002;
     private FragmentManager fragmentManager;
-    private MyList list;
+    private SqlList list;
     private Db db;
     private SQLiteDatabase database;
     private Cursor cursor;
@@ -98,7 +103,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
     public class myBaseAdapter extends BaseAdapter {
         private LayoutInflater mInflater = null;
 
-        public myBaseAdapter(Context context, MyList list1) {
+        public myBaseAdapter(Context context, SqlList list1) {
             this.mInflater = LayoutInflater.from(context);
             list = list1;
         }
@@ -140,18 +145,18 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
             }
 
             try {
-                final MyMap map = list.getMyMap(position);
+                final SqlMap map = list.getMyMap(position);
                 holder.mTextView_gongYSMC.setText(map.getString("gongYSMC"));
                 holder.mTextView_lianXRDH.setText(map.getString("lianLRDH"));
 
                 // 如果連繫人電話2沒資料, 則不顯示
-                if (map.get("lianLRDH2").toString().equals("")) {
+                if (map.getString("lianLRDH2").equals("")) {
                     holder.mTextView_lianXRDH2.setVisibility(View.GONE);
                 } else {
                     holder.mTextView_lianXRDH2.setText(map.getString("lianLRDH2"));
                 }
                 // 如果連繫人電話3沒資料, 則不顯示
-                if (map.get("lianLRDH3").toString().equals("")) {
+                if (map.getString("lianLRDH3").equals("")) {
                     holder.mTextView_lianXRDH3.setVisibility(View.GONE);
                 } else {
                     holder.mTextView_lianXRDH3.setText(map.getString("lianLRDH3"));

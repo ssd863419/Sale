@@ -23,13 +23,13 @@ public class Sql {
     """;
 
 
-    public static MyList parseCursor(Cursor cursor) {
-        def result = new MyList()
+    public static SqlList parseCursor(Cursor cursor) {
+        def result = new SqlList()
         def cols = cursor.getColumnNames()
 
         while (cursor.moveToNext()) {
             // TODO: 改一下 不要用標準的 Map, 用個自己寫的方便 getString getInt getFloat...
-            def row = new MyMap()
+            def row = new SqlMap()
             cols.eachWithIndex { col, i ->
                 def t = cursor.getType(i)
                 if (t == 4) { // FIELD_TYPE_BLOB

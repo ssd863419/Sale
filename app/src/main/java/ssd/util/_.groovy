@@ -1,4 +1,7 @@
-package ssd.util;
+package ssd.util
+
+import android.view.View
+import android.view.ViewGroup;
 
 import java.util.Calendar;
 import java.text.SimpleDateFormat;
@@ -13,4 +16,18 @@ public class _ {
         return sdf.format(Calendar.getInstance().getTime());
     }
 
+    public static ViewMap getViews(v) {
+        def result = new ViewMap()
+        result[v.getId()] = v
+        if (v instanceof ViewGroup) {
+            ViewGroup vg = (ViewGroup) v
+            for (int i = 0; i < vg.getChildCount(); i++) {
+                View child = vg.getChildAt(i)
+                result[child.getId()] = child
+                result.putAll(getViews(child))
+            }
+        }
+        result[-1] = null; // force -1 = null
+        return result
+    }
 }
