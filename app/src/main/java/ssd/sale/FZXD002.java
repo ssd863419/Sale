@@ -113,9 +113,11 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
             case R.id.myButton_save:
                 // TODO 後面需要存入店面檔的sn, 那是在有帳號密碼登錄畫面+上傳雲端硬盤的操作之後
 
+                int flag = 0;       // 用來判斷資料是否可儲存, 0代表可以
                 long old_id = getGongYSMC_ID(new String[]{mEditText_gongYSMC.getText().toString()});
 
-                if (old_id > -1 && old_id != _id) {     // 供應商重名 且 不等於目前編輯的_id
+                // 供應商重名 且 不等於目前編輯的_id
+                if (old_id > -1 && old_id != _id) {
                     new AlertDialog.Builder(this.getActivity())
                             .setMessage(R.string.gongYSMCCF)
                             .setPositiveButton(R.string.queR, new DialogInterface.OnClickListener() {
@@ -125,7 +127,25 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                                 }
                             }).create().show();
 
-                } else if (_id == -1) {                 // insert
+                    flag = -1;
+                }
+
+                // 判斷供應商名稱是否有資料
+                if (mEditText_gongYSMC.getText().toString().equals("")) {
+                    new AlertDialog.Builder(this.getActivity())
+                            .setMessage(R.string.gongYSMCBXYZL)
+                            .setPositiveButton(R.string.queR, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //return;
+                                }
+                            }).create().show();
+
+                    flag = -1;
+                }
+
+                // 新增資料
+                if (flag == 0 && _id == -1) {
                     final ProgressDialog dialog = ProgressDialog.show(
                             this.getActivity(), null, null, true);
 
@@ -157,7 +177,10 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                     Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
                     mButton_next.setEnabled(true);      // 下一筆鈕enable
 
-                } else {                                //update
+                }
+
+                // 修改資料
+                if (flag == 0 && _id != -1){
                     final ProgressDialog dialog = ProgressDialog.show(
                             this.getActivity(), null, null, true);
 
