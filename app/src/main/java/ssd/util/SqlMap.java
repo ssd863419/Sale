@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Created by 0_o on 2014/11/29.
  */
-public class MyMap extends HashMap {
+public class SqlMap extends HashMap {
 
 
     // 字串
