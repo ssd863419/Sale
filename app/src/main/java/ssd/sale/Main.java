@@ -16,8 +16,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.lang.reflect.Method;
+
+import ssd.util._;
+import ssd.util.__;
 
 
 public class Main extends Activity {
@@ -258,6 +262,13 @@ public class Main extends Activity {
                     fzxd001 = new FZXD001();
                     transaction.replace(R.id.content, fzxd001).commit();
                     break;
+                case R.id.myButton_dengC:
+
+                    // TODO: 很奇怪 寫在 _.groovy 就出錯, 所以先搬到 __.java 裡面
+                    __.toast(getActivity(), "Hello, World!!\nI am 0_o", Toast.LENGTH_SHORT);
+
+                    break;
+
 
             }
         }
