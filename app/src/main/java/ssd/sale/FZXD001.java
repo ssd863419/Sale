@@ -20,6 +20,8 @@ import java.util.List;
 import java.util.Map;
 
 import ssd.util.Db;
+import ssd.util.MyList;
+import ssd.util.MyMap;
 import ssd.util.Sql;
 
 /**
@@ -30,7 +32,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
     private CheckBox mCheckBox;
     private FZXD002 fzxd002;
     private FragmentManager fragmentManager;
-    private List list;
+    private MyList list;
     private Db db;
     private SQLiteDatabase database;
     private Cursor cursor;
@@ -99,7 +101,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
     public class myBaseAdapter extends BaseAdapter {
         private LayoutInflater mInflater = null;
 
-        public myBaseAdapter(Context context, List list1) {
+        public myBaseAdapter(Context context, MyList list1) {
             this.mInflater = LayoutInflater.from(context);
             list = list1;
         }
@@ -141,21 +143,21 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
             }
 
             try {
-                final Map map = (Map) list.get(position);
-                holder.mTextView_gongYSMC.setText(map.get("gongYSMC").toString());
-                holder.mTextView_lianXRDH.setText(map.get("lianLRDH").toString());
+                final MyMap map = list.getMyMap(position);
+                holder.mTextView_gongYSMC.setText(map.getString("gongYSMC"));
+                holder.mTextView_lianXRDH.setText(map.getString("lianLRDH"));
 
                 // 如果連繫人電話2沒資料, 則不顯示
                 if (map.get("lianLRDH2").toString().equals("")) {
                     holder.mTextView_lianXRDH2.setVisibility(View.GONE);
                 } else {
-                    holder.mTextView_lianXRDH2.setText(map.get("lianLRDH2").toString());
+                    holder.mTextView_lianXRDH2.setText(map.getString("lianLRDH2"));
                 }
                 // 如果連繫人電話3沒資料, 則不顯示
                 if (map.get("lianLRDH3").toString().equals("")) {
                     holder.mTextView_lianXRDH3.setVisibility(View.GONE);
                 } else {
-                    holder.mTextView_lianXRDH3.setText(map.get("lianLRDH3").toString());
+                    holder.mTextView_lianXRDH3.setText(map.getString("lianLRDH3"));
                 }
 
                 // 點擊 供應商名稱, 則跳至該供應商的編輯畫面
@@ -165,14 +167,14 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.replace(R.id.content, fzxd002);
                         Bundle bundle = new Bundle();
-                        bundle.putString("_id", map.get("_ID").toString());
+                        bundle.putString("_id", map.getString("_ID"));
                         fzxd002.setArguments(bundle);
                         transaction.commit();
                     }
                 });
 
                 /* 停用的資料, 顯示紅字 */
-                if (Integer.valueOf(map.get("shiFQY").toString()) == 0) {
+                if (map.getInt("shiFQY") == 0) {
                     holder.mTextView_gongYSMC.setTextColor(getResources().getColor(R.color.red));
                 } else {
                     holder.mTextView_gongYSMC.setTextColor(getResources().getColor(R.color.black));

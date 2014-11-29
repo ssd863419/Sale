@@ -23,19 +23,19 @@ public class Sql {
     """;
 
 
-    public static List parseCursor(Cursor cursor) {
-        def result = []
+    public static MyList parseCursor(Cursor cursor) {
+        def result = new MyList()
         def cols = cursor.getColumnNames()
 
         while (cursor.moveToNext()) {
             // TODO: 改一下 不要用標準的 Map, 用個自己寫的方便 getString getInt getFloat...
-            def row = [:]
+            def row = new MyMap()
             cols.eachWithIndex { col, i ->
                 def t = cursor.getType(i)
                 if (t == 4) { // FIELD_TYPE_BLOB
                     row[col] = cursor.getBlob(i)
                 } else if (t == 2) { // FIELD_TYPE_FLOAT
-                    row[col] = cursor.getFloat(i)
+                    row[col] = cursor.getDouble(i)
                 } else if (t == 1) { // FIELD_TYPE_INTEGER
                     row[col] = cursor.getInt(i)
                 } else if (t == 0) { // FIELD_TYPE_NULL
