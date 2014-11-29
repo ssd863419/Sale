@@ -53,5 +53,15 @@
     <string name="qiY">啟用</string>
     <string name="tingY">停用</string>
     <string name="xianSQY">顯示啟用</string>
+    <string name="gongYS">供應商</string>
+    <string name="paiZ">拍照</string>
+    <string name="benDT">本地圖</string>
+    <string name="liST">歷史圖</string>
+    <string name="gongYSXH">供應商型號</string>
+    <string name="jingHJ">進貨價</string>
+    <string name="biaoZSJ">標準售價</string>
+    <string name="jianS">件數</string>
+    <string name="huoPBZ">貨品備註</string>
+    <string name="chaX">查詢</string>
 
 </resources>

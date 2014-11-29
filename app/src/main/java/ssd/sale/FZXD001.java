@@ -16,9 +16,6 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
-import java.util.List;
-import java.util.Map;
-
 import ssd.util.Db;
 import ssd.util.MyList;
 import ssd.util.MyMap;

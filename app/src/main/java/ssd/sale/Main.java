@@ -205,6 +205,12 @@ public class Main extends Activity {
         }
     }
 
+    /* 隱藏最上方與最下方的 FrameLayout */
+    public void hideTitle() {
+        frameLayout_title.setVisibility(View.GONE);
+        frameLayout_bottom.setVisibility(View.GONE);
+    }
+
     /* 選單: 系統 的Fragment畫面 */
     public static class Menu_XiT extends Fragment implements Button.OnClickListener {
         private Button mButton_xiuGMM;      // 修改密碼
@@ -214,7 +220,7 @@ public class Main extends Activity {
         private Button mButton_tuiJSYZ;     // 推薦使用者
         private Button mButton_dengC;       // 登出
         private FragmentManager fragmentManager;
-        private FZXD001 fzxd001;
+        private FZXD001 fzxd001;            // 供應商設定畫面
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -245,14 +251,12 @@ public class Main extends Activity {
         @Override
         public void onClick(View view) {
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            frameLayout_title.setVisibility(View.GONE);
-            frameLayout_bottom.setVisibility(View.GONE);
+            new Main().hideTitle();
 
             switch (view.getId()) {
                 case R.id.myButton_gongYSSD :
                     fzxd001 = new FZXD001();
-                    transaction.replace(R.id.content, fzxd001);
-                    transaction.commit();
+                    transaction.replace(R.id.content, fzxd001).commit();
                     break;
 
             }
@@ -280,18 +284,45 @@ public class Main extends Activity {
 
     /* 選單: 進貨 的Fragment畫面 */
     public static class Menu_JinH extends Fragment implements Button.OnClickListener {
+        private Button mBtn_huoPDL;     // 貨品登陸
+        private Button mBtn_huoPCX;     // 貨品查詢
+        private Button mBtn_tuiCSDL;    // 退廠商登陸
+        private Button mBtn_jinHD;      // 進貨單
+        private FragmentManager fragmentManager;
+        private FZXD003 fzxd003;        // 貨品登陸畫面
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
             View v = inflater.inflate(R.layout.menu_jinh, container, false);
-
+            initView(v);
             return v;
         }
 
+        private void initView(View view) {
+            mBtn_huoPDL = (Button) view.findViewById(R.id.myButton_huoPDL);
+            mBtn_huoPCX = (Button) view.findViewById(R.id.myButton_huoPCX);
+            mBtn_tuiCSDL = (Button) view.findViewById(R.id.myButton_tuiCSDL);
+            mBtn_jinHD = (Button) view.findViewById(R.id.myButton_jinHD);
+            fragmentManager = getFragmentManager();
 
+            mBtn_huoPDL.setOnClickListener(this);
+            mBtn_huoPCX.setOnClickListener(this);
+            mBtn_tuiCSDL.setOnClickListener(this);
+            mBtn_jinHD.setOnClickListener(this);
+        }
 
         @Override
         public void onClick(View view) {
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            new Main().hideTitle();
+
+            switch (view.getId()) {
+                case R.id.myButton_huoPDL:
+                    fzxd003 = new FZXD003();
+                    transaction.replace(R.id.content, fzxd003).commit();
+
+            }
+
         }
     }
 
