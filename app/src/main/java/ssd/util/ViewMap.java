@@ -4,6 +4,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.HashMap;
 
@@ -26,6 +27,10 @@ public class ViewMap extends HashMap {
 
     public CheckBox getCheckBox(int id) {
         return (CheckBox) this.get(id);
+    }
+
+    public TextView getTextView(int id) {
+        return (TextView) this.get(id);
     }
 
 

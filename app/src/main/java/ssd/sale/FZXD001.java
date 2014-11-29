@@ -14,10 +14,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.List;
 
 import ssd.util.Db;
 import ssd.util.SqlList;
@@ -64,7 +61,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         cursor = database.query("fuZXD003", null, "shiFQY = ?", new String[]{"1"},
                 null, null, "gongYSMC", null);
         list = Sql.parseCursor(cursor);
-        myBaseAdapter adapter = new myBaseAdapter(getActivity(), list);
+        Fzxd001Adapter adapter = new Fzxd001Adapter(getActivity(), list);
         setListAdapter(adapter);
 
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -78,7 +75,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                 }
 
                 list = Sql.parseCursor(cursor);
-                myBaseAdapter adapter = new myBaseAdapter(getActivity(), list);
+                Fzxd001Adapter adapter = new Fzxd001Adapter(getActivity(), list);
                 setListAdapter(adapter);
             }
         });
@@ -93,17 +90,10 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         }
     }
 
-    static class ViewHolder {
-        public TextView mTextView_gongYSMC;
-        public TextView mTextView_lianXRDH;
-        public TextView mTextView_lianXRDH2;
-        public TextView mTextView_lianXRDH3;
-    }
-
-    public class myBaseAdapter extends BaseAdapter {
+    public class Fzxd001Adapter extends BaseAdapter {
         private LayoutInflater mInflater = null;
 
-        public myBaseAdapter(Context context, SqlList list1) {
+        public Fzxd001Adapter(Context context, SqlList list1) {
             this.mInflater = LayoutInflater.from(context);
             list = list1;
         }
@@ -125,45 +115,38 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder = null;
+            ViewMap holder = null;
 
             if (convertView == null) {
-                holder = new ViewHolder();
                 convertView = mInflater.inflate(R.layout.fzxd001_item, null);
-                holder.mTextView_gongYSMC = (TextView) convertView.findViewById(
-                        R.id.myTextView_gongYSMC);
-                holder.mTextView_lianXRDH = (TextView) convertView.findViewById(
-                        R.id.myTextView_lianXRDH);
-                holder.mTextView_lianXRDH2 = (TextView) convertView.findViewById(
-                        R.id.myTextView_lianXRDH2);
-                holder.mTextView_lianXRDH3 = (TextView) convertView.findViewById(
-                        R.id.myTextView_lianXRDH3);
+                holder = _.getViews(convertView);
 
                 convertView.setTag(holder);
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                holder = (ViewMap) convertView.getTag();
             }
 
             try {
                 final SqlMap map = list.getMyMap(position);
-                holder.mTextView_gongYSMC.setText(map.getString("gongYSMC"));
-                holder.mTextView_lianXRDH.setText(map.getString("lianLRDH"));
+                holder.getTextView(R.id.myTextView_gongYSMC).setText(map.getString("gongYSMC"));
+                holder.getTextView(R.id.myTextView_lianXRDH).setText(map.getString("lianLRDH"));
 
                 // 如果連繫人電話2沒資料, 則不顯示
                 if (map.getString("lianLRDH2").equals("")) {
-                    holder.mTextView_lianXRDH2.setVisibility(View.GONE);
+                    holder.getTextView(R.id.myTextView_lianXRDH2).setVisibility(View.GONE);
                 } else {
-                    holder.mTextView_lianXRDH2.setText(map.getString("lianLRDH2"));
+                    holder.getTextView(R.id.myTextView_lianXRDH2).setText(map.getString("lianLRDH2"));
                 }
                 // 如果連繫人電話3沒資料, 則不顯示
                 if (map.getString("lianLRDH3").equals("")) {
-                    holder.mTextView_lianXRDH3.setVisibility(View.GONE);
+                    holder.getTextView(R.id.myTextView_lianXRDH3).setVisibility(View.GONE);
                 } else {
-                    holder.mTextView_lianXRDH3.setText(map.getString("lianLRDH3"));
+                    holder.getTextView(R.id.myTextView_lianXRDH3).setText(map.getString("lianLRDH3"));
                 }
 
                 // 點擊 供應商名稱, 則跳至該供應商的編輯畫面
-                holder.mTextView_gongYSMC.setOnClickListener(new View.OnClickListener() {
+                holder.getTextView(R.id.myEditText_gongYSMC).setOnClickListener(new View.OnClickListener() {
+
                     @Override
                     public void onClick(View v) {
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -177,9 +160,9 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
 
                 /* 停用的資料, 顯示紅字 */
                 if (map.getInt("shiFQY") == 0) {
-                    holder.mTextView_gongYSMC.setTextColor(getResources().getColor(R.color.red));
+                    holder.getTextView(R.id.myTextView_gongYSMC).setTextColor(getResources().getColor(R.color.red));
                 } else {
-                    holder.mTextView_gongYSMC.setTextColor(getResources().getColor(R.color.black));
+                    holder.getTextView(R.id.myTextView_gongYSMC).setTextColor(getResources().getColor(R.color.black));
                 }
 
 
