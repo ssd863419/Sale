@@ -23,8 +23,12 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Map;
 
 import ssd.util.Db;
+import ssd.util.Sql;
+import ssd.util.SqlList;
+import ssd.util.SqlMap;
 import ssd.util._;
 
 /**
@@ -109,9 +113,11 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
             case R.id.myButton_save:
                 // TODO 後面需要存入店面檔的sn, 那是在有帳號密碼登錄畫面+上傳雲端硬盤的操作之後
 
+                int flag = 0;       // 用來判斷資料是否可儲存, 0代表可以
                 long old_id = getGongYSMC_ID(new String[]{mEditText_gongYSMC.getText().toString()});
 
-                if (old_id > -1 && old_id != _id) {     // 供應商重名 且 不等於目前編輯的_id
+                // 供應商重名 且 不等於目前編輯的_id
+                if (old_id > -1 && old_id != _id) {
                     new AlertDialog.Builder(this.getActivity())
                             .setMessage(R.string.gongYSMCCF)
                             .setPositiveButton(R.string.queR, new DialogInterface.OnClickListener() {
@@ -121,7 +127,25 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                                 }
                             }).create().show();
 
-                } else if (_id == -1) {                 // insert
+                    flag = -1;
+                }
+
+                // 判斷供應商名稱是否有資料
+                if (mEditText_gongYSMC.getText().toString().equals("")) {
+                    new AlertDialog.Builder(this.getActivity())
+                            .setMessage(R.string.gongYSMCBXYZL)
+                            .setPositiveButton(R.string.queR, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //return;
+                                }
+                            }).create().show();
+
+                    flag = -1;
+                }
+
+                // 新增資料
+                if (flag == 0 && _id == -1) {
                     final ProgressDialog dialog = ProgressDialog.show(
                             this.getActivity(), null, null, true);
 
@@ -153,7 +177,10 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                     Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
                     mButton_next.setEnabled(true);      // 下一筆鈕enable
 
-                } else {                                //update
+                }
+
+                // 修改資料
+                if (flag == 0 && _id != -1){
                     final ProgressDialog dialog = ProgressDialog.show(
                             this.getActivity(), null, null, true);
 
@@ -282,28 +309,28 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
 
     public void query(String[] str) {
         Cursor cursor = database.query("fuZXD003", null, "_ID = ?", str, null, null, null, null);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            mEditText_gongYSMC.setText(cursor.getString(1));        // 供應商名稱
-            mEditText_gongYSDZ.setText(cursor.getString(2));        // 供應商地址
-            mEditText_lianXRXM.setText(cursor.getString(3));        // 聯繫人姓名
-            mEditText_lianXRDH.setText(cursor.getString(4));        // 聯繫人電話
+        SqlList list = Sql.parseCursor(cursor);
+        SqlMap map = list.getMyMap(0);
 
-            if (!cursor.getString(5).equals("")) {                  // 聯繫人電話2
-                mTableRow1.setVisibility(View.VISIBLE);
-                mEditText_lianXRDH2.setText(cursor.getString(5));
-            }
+        mEditText_gongYSMC.setText(map.getString("gongYSMC"));        // 供應商名稱
+        mEditText_gongYSDZ.setText(map.getString("gongYSDZ"));        // 供應商地址
+        mEditText_lianXRXM.setText(map.getString("lianLRXM"));        // 聯繫人姓名
+        mEditText_lianXRDH.setText(map.getString("lianLRDH"));        // 聯繫人電話
 
-            if (!cursor.getString(6).equals("")) {                  // 聯繫人電話3
-                mTableRow2.setVisibility(View.VISIBLE);
-                mEditText_lianXRDH3.setText(cursor.getString(6));
-            }
-
-            mEditText_beiZ.setText(cursor.getString(7));            // 備註
-
-            // 是否啟用
-            mRB_checked.setChecked(cursor.getInt(8) == 1);
-            mRB_uncheck.setChecked(cursor.getInt(8) == 0);
+        if (!map.getString("lianLRDH2").equals("")) {                  // 聯繫人電話2
+            mTableRow1.setVisibility(View.VISIBLE);
+            mEditText_lianXRDH2.setText(map.getString("lianLRDH2"));
         }
+
+        if (!map.getString("lianLRDH3").equals("")) {                  // 聯繫人電話3
+            mTableRow2.setVisibility(View.VISIBLE);
+            mEditText_lianXRDH3.setText(map.getString("lianLRDH3"));
+        }
+
+        mEditText_beiZ.setText(map.getString("beiZ"));            // 備註
+
+        // 是否啟用
+        mRB_checked.setChecked(map.getInt("shiFQY") == 1);
+        mRB_uncheck.setChecked(map.getInt("shiFQY") == 0);
     }
 }

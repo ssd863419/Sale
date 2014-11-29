@@ -14,11 +14,13 @@ import java.text.SimpleDateFormat;
  */
 public class _ {
 
+    /* 取得當前時間 */
     public static String now(pattern="yyyy/MM/dd HH:mm:ss") {
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         return sdf.format(Calendar.getInstance().getTime());
     }
 
+    /* 用於ViewHolder */
     public static ViewMap getViews(v) {
         def result = new ViewMap()
         result[v.getId()] = v
