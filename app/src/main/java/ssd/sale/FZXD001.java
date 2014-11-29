@@ -121,6 +121,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
 
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.fzxd001_item, null);
+                // add this line
                 holder = _.getViews(convertView);
 
                 convertView.setTag(holder);
