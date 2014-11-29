@@ -14,7 +14,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.TextView;
 
 import ssd.util.Db;
 import ssd.util.SqlList;
@@ -148,14 +147,14 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                 }
 
                 // 點擊 供應商名稱, 則跳至該供應商的編輯畫面
-                holder.getTextView(R.id.myEditText_gongYSMC).setOnClickListener(new View.OnClickListener() {
+                holder.getTextView(R.id.myTextView_gongYSMC).setOnClickListener(new View.OnClickListener() {
 
                     @Override
                     public void onClick(View v) {
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.replace(R.id.content, fzxd002);
                         Bundle bundle = new Bundle();
-                        bundle.putString("_id", map.getString("_ID"));
+                        bundle.putString("_id", String.valueOf(map.getInt("_ID")));
                         fzxd002.setArguments(bundle);
                         transaction.commit();
                     }
@@ -163,12 +162,12 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
 
                 /* 停用的資料, 顯示紅字 */
                 if (map.getInt("shiFQY") == 0) {
-                    holder.getTextView(R.id.myTextView_gongYSMC).setTextColor(getResources().getColor(R.color.red));
+                    holder.getTextView(R.id.myTextView_gongYSMC).setTextColor(
+                            getResources().getColor(R.color.red));
                 } else {
-                    holder.getTextView(R.id.myTextView_gongYSMC).setTextColor(getResources().getColor(R.color.black));
+                    holder.getTextView(R.id.myTextView_gongYSMC).setTextColor(
+                            getResources().getColor(R.color.black));
                 }
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
