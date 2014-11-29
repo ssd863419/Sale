@@ -1,13 +1,18 @@
 package ssd.sale;
 
 import android.app.Fragment;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
+
+import ssd.util.Db;
 
 /**
  * Created by Administrator on 2014/11/29.
@@ -21,13 +26,16 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private Button mBtn_chaX;           // 查詢 按鈕
     private ImageView mImage;           // 要顯示的圖片
     private TextView mTv_img;           // 未選圖之前的文字提示
-
+    private Spinner mSpinner;           // 選供應商
+    private Db db;
+    private SQLiteDatabase database;
+    private Cursor cursor;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fzxd003, container, false);
         initView(v);
-//        initImage();
+        initImage();
 
         return v;
     }
@@ -41,6 +49,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         mBtn_chaX = (Button) view.findViewById(R.id.myBtn_chaX);
         mImage = (ImageView) view.findViewById(R.id.myImg);
         mTv_img = (TextView) view.findViewById(R.id.myTv_img);
+        mSpinner = (Spinner) view.findViewById(R.id.mySpinner);
 
         mBtn_paiZ.setOnClickListener(this);
         mBtn_benDT.setOnClickListener(this);
@@ -56,9 +65,11 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     }
 
     /* 沒有顯示圖片之前的文字說明 */
-//    private void initImage() {
-//        if (mImage == null) {
-//            mTv_img.setText("歡迎光臨麥當勞");
-//        }
-//    }
+    private void initImage() {
+        if (mImage.getDrawable() == null) {
+            mTv_img.setVisibility(View.VISIBLE);
+        } else {
+            mTv_img.setVisibility(View.GONE);
+        }
+    }
 }
