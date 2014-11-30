@@ -7,12 +7,16 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import ssd.util.Db;
+import ssd.util.Sql;
+import ssd.util.SqlList;
+import ssd.util.SqlMap;
 
 /**
  * Created by Administrator on 2014/11/29.
@@ -28,14 +32,18 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private TextView mTv_img;           // 未選圖之前的文字提示
     private Spinner mSpinner;           // 選供應商
     private Db db;
-    private SQLiteDatabase database;
-    private Cursor cursor;
+    private SQLiteDatabase database_gongYS;     // 供應商的database
+    private Cursor cursor_gongYS;               // 供應商的cursor
+    private SqlList list_gongYS;                // 供應商的list
+    private SqlMap map_gongYS;                  // 供應商的map
+    private ssd.util.SpinnerAdapter adapter_gongYS; // 供應商的adapter
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fzxd003, container, false);
         initView(v);
         initImage();
+        queryGongYS();
 
         return v;
     }
@@ -50,6 +58,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         mImage = (ImageView) view.findViewById(R.id.myImg);
         mTv_img = (TextView) view.findViewById(R.id.myTv_img);
         mSpinner = (Spinner) view.findViewById(R.id.mySpinner);
+        db = new Db(getActivity());
+        database_gongYS = db.getReadableDatabase();
 
         mBtn_paiZ.setOnClickListener(this);
         mBtn_benDT.setOnClickListener(this);
@@ -72,4 +82,22 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
             mTv_img.setVisibility(View.GONE);
         }
     }
+
+    /* 供應商的資料 */
+    private void queryGongYS() {
+        cursor_gongYS = database_gongYS.query(
+                "fuZXD003", new String[] {"_ID", "gongYSMC"}, "shiFQY = ?", new String[] {"1"},
+                null, null, "gongYSMC", null);
+
+        list_gongYS = Sql.parseCursor(cursor_gongYS);
+
+        adapter_gongYS = new ssd.util.SpinnerAdapter(
+                getActivity(), android.R.layout.simple_spinner_item, list_gongYS.toSpinnerArray("_ID", "gongYSMC"));
+
+        mSpinner.setAdapter(adapter_gongYS);
+    }
+
+
 }
+
+

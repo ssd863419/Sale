@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:id="@+id/llToast"
-    android:gravity="center_vertical|center_horizontal">
+    android:background="@android:drawable/toast_frame">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/ivToast"
-        android:contentDescription="The Image View"
-        android:background="@drawable/text_bubble_icon" />
+        android:contentDescription="The Image View" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_margin="1dip"
+        android:layout_weight="1"
+        android:textAppearance="@android:style/TextAppearance.Small"
+        android:textColor="@color/White"
+        android:shadowColor="@color/Gray"
+        android:shadowRadius="2.75"
         android:id="@+id/tvToast" />
-</RelativeLayout>
+</LinearLayout>

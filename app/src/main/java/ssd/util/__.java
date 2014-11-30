@@ -1,6 +1,7 @@
 package ssd.util;
 
 import android.app.Activity;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,11 @@ public class __ {
             textView.setText(text);
             toast.setDuration(duration);
         }
+
+        toast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL, 0, 0);    // 全置中
+        //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);      // 置中
+        //toast.setGravity(Gravity.TOP, 0, 200);                // 靠上
+        //toast.setGravity(Gravity.BOTTOM, 0, 100);             // 靠下
         toast.show();
     }
 
