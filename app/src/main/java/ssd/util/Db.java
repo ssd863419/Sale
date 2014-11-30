@@ -21,6 +21,7 @@ public class Db extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         /* 每個要開的table, 放在這裡, sql語法放在Sql.groovy裡面 */
         db.execSQL(Sql.CREATE_TABLE_fuZXD003);
+        db.execSQL(Sql.CREATE_TABLE_fuZXD002);
 
         // TODO: 應該預設篩個幾筆資料, 方便作測試
     }

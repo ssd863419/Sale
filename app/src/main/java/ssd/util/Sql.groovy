@@ -4,10 +4,17 @@ import android.database.Cursor
 
 public class Sql {
 
-    // TODO: 應該把所有 _ID 改成 _id 感覺順眼一點...
+    /* 所有資料格式
+     * NULL：空值。
+　　 * INTEGER：带符号的整型，具体取决有存入数字的范围大小。
+　　 * REAL：浮点数字，存储为8-byte IEEE浮点数。
+　　 * TEXT：字符串文本。
+　　 * BLOB：二进制对象。
+     * */
+
     public static final String CREATE_TABLE_fuZXD003 = """
             CREATE TABLE IF NOT EXISTS fuZXD003 (
-            _ID INTEGER PRIMARY KEY AUTOINCREMENT,
+            _id INTEGER PRIMARY KEY AUTOINCREMENT,
             gongYSMC TEXT NOT NULL,
             gongYSDZ TEXT NOT NULL,
             lianLRXM TEXT NOT NULL,
@@ -22,6 +29,23 @@ public class Sql {
             )
     """;
 
+    public static final String CREATE_TABLE_fuZXD002 = """
+            CREATE TABLE IF NOT EXISTS fuZXD002 (
+            _id INTEGER PRIMARY KEY AUTOINCREMENT,
+            jinHJ REAL NOT NULL,
+            biaoZSJ REAL NOT NULL,
+            jinHR TEXT NOT NULL,
+            jianS INTEGER NOT NULL,
+            huoPBZ TEXT NOT NULL,
+            huoPTP BLOB NOT NULL,
+            fuZXD003_id INTEGER NOT NULL,
+            gongYSXH TEXT NOT NULL,
+            shiFQY INTEGER NOT NULL,
+            prgName TEXT NOT NULL,
+            crtDay TEXT NOT NULL,
+            updDay TEXT NOT NULL
+            )
+    """;
 
     public static SqlList parseCursor(Cursor cursor) {
         def result = new SqlList()

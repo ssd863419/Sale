@@ -162,7 +162,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                                         mEditText_lianXRDH.getText().toString(),
                                         mEditText_lianXRDH2.getText().toString(),
                                         mEditText_lianXRDH3.getText().toString(),
-                                        mEditText_beiZ.getText().toString()
+                                        mEditText_beiZ.getText().toString(),
+                                        (mRB_checked.isChecked() ? 1 : 0)
                                 );
 
                                 long endTime = Calendar.getInstance().getTimeInMillis();
@@ -198,7 +199,8 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                                         mEditText_lianXRDH.getText().toString(),
                                         mEditText_lianXRDH2.getText().toString(),
                                         mEditText_lianXRDH3.getText().toString(),
-                                        mEditText_beiZ.getText().toString()
+                                        mEditText_beiZ.getText().toString(),
+                                        (mRB_checked.isChecked() ? 1 : 0)
                                 );
 
                                 long endTime = Calendar.getInstance().getTimeInMillis();
@@ -224,6 +226,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 mEditText_lianXRDH2.setText("");
                 mEditText_lianXRDH3.setText("");
                 mEditText_beiZ.setText("");
+                mRB_checked.setChecked(true);
                 _id = -1;
 
                 break;
@@ -256,7 +259,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     };
 
     public long insert(String gongYSMC, String gongYSDZ, String lianXRXM,
-                       String lianXRDH, String lianXRDH2, String lianXRDH3, String beiZ) {
+                       String lianXRDH, String lianXRDH2, String lianXRDH3, String beiZ, int shiFQY) {
 
         ContentValues values = new ContentValues();
         values.put("gongYSMC", gongYSMC);
@@ -266,7 +269,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         values.put("lianLRDH2", lianXRDH2);
         values.put("lianLRDH3", lianXRDH3);
         values.put("beiZ", beiZ);
-        values.put("shiFQY", 1);
+        values.put("shiFQY", shiFQY);
         values.put("prgName", "FZXD002");
         values.put("crtDay", _.now());
         values.put("updDay", _.now());
@@ -275,7 +278,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     }
 
     public long update(long key_id, String gongYSMC, String gongYSDZ, String lianXRXM,
-                       String lianXRDH, String lianXRDH2, String lianXRDH3, String beiZ) {
+                       String lianXRDH, String lianXRDH2, String lianXRDH3, String beiZ, int shiFQY) {
 
         ContentValues values = new ContentValues();
         values.put("gongYSMC", gongYSMC);
@@ -285,11 +288,11 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         values.put("lianLRDH2", lianXRDH2);
         values.put("lianLRDH3", lianXRDH3);
         values.put("beiZ", beiZ);
-        values.put("shiFQY", mRB_checked.isChecked() ? 1 : 0);
+        values.put("shiFQY",shiFQY);
         values.put("prgName", "FZXD002");
         values.put("updDay", _.now());
 
-        return database.update("fuZXD003", values, "_ID = ?", new String[]{String.valueOf(key_id)});
+        return database.update("fuZXD003", values, "_id = ?", new String[]{String.valueOf(key_id)});
     }
 
     public long getGongYSMC_ID(String[] str) {
@@ -308,7 +311,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     }
 
     public void query(String[] str) {
-        Cursor cursor = database.query("fuZXD003", null, "_ID = ?", str, null, null, null, null);
+        Cursor cursor = database.query("fuZXD003", null, "_id = ?", str, null, null, null, null);
         SqlList list = Sql.parseCursor(cursor);
         SqlMap map = list.getMyMap(0);
 

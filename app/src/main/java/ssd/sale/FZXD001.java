@@ -118,11 +118,10 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewMap holder = null;
+            ViewMap holder;
 
             if (convertView == null) {
                 convertView = mInflater.inflate(R.layout.fzxd001_item, null);
-                // add this line
                 holder = _.getViews(convertView);
 
                 convertView.setTag(holder);
@@ -136,16 +135,16 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                 holder.getTextView(R.id.myTextView_lianXRDH).setText(map.getString("lianLRDH"));
 
                 // 如果連繫人電話2沒資料, 則不顯示
-                if (map.getString("lianLRDH2").equals("")) {
-                    holder.getTextView(R.id.myTextView_lianXRDH2).setVisibility(View.GONE);
-                } else {
+                if (!map.getString("lianLRDH2").equals("")) {
                     holder.getTextView(R.id.myTextView_lianXRDH2).setText(map.getString("lianLRDH2"));
+                } else {
+                    holder.getTextView(R.id.myTextView_lianXRDH2).setVisibility(View.GONE);
                 }
                 // 如果連繫人電話3沒資料, 則不顯示
-                if (map.getString("lianLRDH3").equals("")) {
-                    holder.getTextView(R.id.myTextView_lianXRDH3).setVisibility(View.GONE);
-                } else {
+                if (!map.getString("lianLRDH3").equals("")) {
                     holder.getTextView(R.id.myTextView_lianXRDH3).setText(map.getString("lianLRDH3"));
+                } else {
+                    holder.getTextView(R.id.myTextView_lianXRDH3).setVisibility(View.GONE);
                 }
 
                 // 點擊 供應商名稱, 則跳至該供應商的編輯畫面
@@ -156,7 +155,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
                         FragmentTransaction transaction = fragmentManager.beginTransaction();
                         transaction.replace(R.id.content, fzxd002);
                         Bundle bundle = new Bundle();
-                        bundle.putString("_id", String.valueOf(map.getInt("_ID")));
+                        bundle.putString("_id", String.valueOf(map.getInt("_id")));
                         fzxd002.setArguments(bundle);
                         transaction.commit();
                     }

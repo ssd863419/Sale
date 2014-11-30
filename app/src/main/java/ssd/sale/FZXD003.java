@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,11 +32,15 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private ImageView mImage;           // 要顯示的圖片
     private TextView mTv_img;           // 未選圖之前的文字提示
     private Spinner mSpinner;           // 選供應商
+    private EditText mET_gongYSXH;      // 供應商型號
+    private EditText mET_jingHJ;        // 進貨價
+    private EditText mET_biaoZSJ;       // 標準售價
+    private EditText mET_jianS;         // 件數
+    private EditText mET_huoPBZ;        // 貨品備註
     private Db db;
-    private SQLiteDatabase database_gongYS;     // 供應商的database
-    private Cursor cursor_gongYS;               // 供應商的cursor
-    private SqlList list_gongYS;                // 供應商的list
-    private SqlMap map_gongYS;                  // 供應商的map
+    private SQLiteDatabase database_gongYS;         // 供應商的database
+    private Cursor cursor_gongYS;                   // 供應商的cursor
+    private SqlList list_gongYS;                    // 供應商的list
     private ssd.util.SpinnerAdapter adapter_gongYS; // 供應商的adapter
 
     @Override
@@ -58,6 +63,12 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         mImage = (ImageView) view.findViewById(R.id.myImg);
         mTv_img = (TextView) view.findViewById(R.id.myTv_img);
         mSpinner = (Spinner) view.findViewById(R.id.mySpinner);
+        mET_gongYSXH = (EditText) view.findViewById(R.id.myET_gongYSXH);
+        mET_biaoZSJ = (EditText) view.findViewById(R.id.myET_biaoZSJ);
+        mET_jingHJ = (EditText) view.findViewById(R.id.myET_jingHJ);
+        mET_biaoZSJ = (EditText) view.findViewById(R.id.myET_biaoZSJ);
+        mET_jianS = (EditText) view.findViewById(R.id.myET_jianS);
+        mET_huoPBZ = (EditText) view.findViewById(R.id.myET_huoPBZ);
         db = new Db(getActivity());
         database_gongYS = db.getReadableDatabase();
 
@@ -71,7 +82,10 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.myBtn_paiZ:
 
+        }
     }
 
     /* 沒有顯示圖片之前的文字說明 */
@@ -86,13 +100,13 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     /* 供應商的資料 */
     private void queryGongYS() {
         cursor_gongYS = database_gongYS.query(
-                "fuZXD003", new String[] {"_ID", "gongYSMC"}, "shiFQY = ?", new String[] {"1"},
+                "fuZXD003", new String[] {"_id", "gongYSMC"}, "shiFQY = ?", new String[] {"1"},
                 null, null, "gongYSMC", null);
 
         list_gongYS = Sql.parseCursor(cursor_gongYS);
 
         adapter_gongYS = new ssd.util.SpinnerAdapter(
-                getActivity(), android.R.layout.simple_spinner_item, list_gongYS.toSpinnerArray("_ID", "gongYSMC"));
+                getActivity(), android.R.layout.simple_spinner_item, list_gongYS.toSpinnerArray("_id", "gongYSMC"));
 
         mSpinner.setAdapter(adapter_gongYS);
     }
