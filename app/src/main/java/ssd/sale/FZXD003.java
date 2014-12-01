@@ -198,6 +198,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
                 }
             }
 
+            mImage.setImageBitmap(bitmap);
         }
     }
 }

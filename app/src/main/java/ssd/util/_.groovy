@@ -1,11 +1,7 @@
 package ssd.util
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import android.widget.Toast
-import ssd.sale.R;
 
 import java.text.SimpleDateFormat;
 
@@ -35,6 +31,5 @@ public class _ {
         result[-1] = null; // force -1 = null
         return result
     }
-
 
 }

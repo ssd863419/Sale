@@ -94,6 +94,7 @@ public class Main extends Activity {
         frameLayout_title = (FrameLayout) findViewById(R.id.content_title);
         frameLayout_bottom = (FrameLayout) findViewById(R.id.content_bottom);
         fragmentManager = getFragmentManager();
+
     }
 
     Button.OnClickListener menuClick = new Button.OnClickListener() {
@@ -131,7 +132,6 @@ public class Main extends Activity {
     private void setTabSelection(int index) {
         clearSelection();   // 每次選中之前, 先清除上次的選中狀態
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        //transaction.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
         switch (index) {
             case R.id.layout_jinH:
                 mTextViewJinH.setTextColor(Color.WHITE);
