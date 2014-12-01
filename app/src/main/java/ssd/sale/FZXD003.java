@@ -105,7 +105,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
         switch (view.getId()) {
             case R.id.myBtn_paiZ:
-
+                // TODO 要確認使用者的手機的開發者選項, 是否有勾選"不要保留活動"
                 // 確認有攝像頭, 在進行拍照取圖
                 if (hasCamera()) {
                     useCamera();
@@ -166,6 +166,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK) {
+            int edgeLength;     //用來做為照片的長寬
+
             String sdStatus = Environment.getExternalStorageState();
             if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd卡是否可用
                 return;
@@ -185,6 +187,10 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
             String fileName = "/sdcard/myImage/" + name;
 
             try {
+                edgeLength = (bitmap.getHeight() <= bitmap.getWidth() ?
+                        bitmap.getHeight() : bitmap.getWidth());
+
+                bitmap = centerSquareScaleBitmap(bitmap, edgeLength);
                 b = new FileOutputStream(fileName);
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
             } catch (FileNotFoundException e) {
@@ -199,7 +205,56 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
             }
 
             mImage.setImageBitmap(bitmap);
+            initImage();
         }
+    }
+
+    /**
+
+     * @param bitmap      原图
+     * @param edgeLength  希望得到的正方形部分的边长
+     * @return  缩放截取正中部分后的位图。
+     */
+    public static Bitmap centerSquareScaleBitmap(Bitmap bitmap, int edgeLength)
+    {
+        if(null == bitmap || edgeLength <= 0)
+        {
+            return  null;
+        }
+
+        Bitmap result = bitmap;
+        int widthOrg = bitmap.getWidth();
+        int heightOrg = bitmap.getHeight();
+
+        if(widthOrg >= edgeLength && heightOrg >= edgeLength)
+        {
+            //压缩到一个最小长度是edgeLength的bitmap
+            int longerEdge = (int)(edgeLength * Math.max(widthOrg, heightOrg) / Math.min(widthOrg, heightOrg));
+            int scaledWidth = widthOrg > heightOrg ? longerEdge : edgeLength;
+            int scaledHeight = widthOrg > heightOrg ? edgeLength : longerEdge;
+            Bitmap scaledBitmap;
+
+            try{
+                scaledBitmap = Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true);
+            }
+            catch(Exception e){
+                return null;
+            }
+
+            //从图中截取正中间的正方形部分。
+            int xTopLeft = (scaledWidth - edgeLength) / 2;
+            int yTopLeft = (scaledHeight - edgeLength) / 2;
+
+            try{
+                result = Bitmap.createBitmap(scaledBitmap, xTopLeft, yTopLeft, edgeLength, edgeLength);
+                scaledBitmap.recycle();
+            }
+            catch(Exception e){
+                return null;
+            }
+        }
+
+        return result;
     }
 }
 

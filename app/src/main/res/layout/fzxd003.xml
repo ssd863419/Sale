@@ -38,15 +38,14 @@
         </LinearLayout>
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:id="@+id/myImg"
             android:paddingLeft="10dp"
-            android:maxHeight="300dp"
-            android:maxWidth="300dp" />
+            android:longClickable="false" />
 
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:text="@string/noImageShow"
             android:id="@+id/myTv_img"
