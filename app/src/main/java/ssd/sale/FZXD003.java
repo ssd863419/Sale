@@ -1,23 +1,39 @@
 package ssd.sale;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.Locale;
 
 import ssd.util.Db;
 import ssd.util.Sql;
 import ssd.util.SqlList;
-import ssd.util.SqlMap;
 
 /**
  * Created by Administrator on 2014/11/29.
@@ -42,6 +58,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private Cursor cursor_gongYS;                   // 供應商的cursor
     private SqlList list_gongYS;                    // 供應商的list
     private ssd.util.SpinnerAdapter adapter_gongYS; // 供應商的adapter
+    private FragmentManager fragmentManager;
+    private FragmentTransaction transaction;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,9 +100,18 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
     @Override
     public void onClick(View view) {
+        fragmentManager = getFragmentManager();
+        transaction = fragmentManager.beginTransaction();
+
         switch (view.getId()) {
             case R.id.myBtn_paiZ:
 
+                // 確認有攝像頭, 在進行拍照取圖
+                if (hasCamera()) {
+                    useCamera();
+                }
+
+                break;
         }
     }
 
@@ -106,12 +133,73 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         list_gongYS = Sql.parseCursor(cursor_gongYS);
 
         adapter_gongYS = new ssd.util.SpinnerAdapter(
-                getActivity(), android.R.layout.simple_spinner_item, list_gongYS.toSpinnerArray("_id", "gongYSMC"));
+                getActivity(), android.R.layout.simple_spinner_item,
+                list_gongYS.toSpinnerArray("_id", "gongYSMC"));
 
         mSpinner.setAdapter(adapter_gongYS);
     }
 
+    /* 檢測是否有攝像頭 */
+    private boolean hasCamera() {
+        Context context = getActivity();
+        PackageManager packageManager = context.getPackageManager();
 
+        if(!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
+            Toast.makeText(getActivity(),
+                    "This device does not have a camera.",
+                    Toast.LENGTH_SHORT).show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /* 拍照取照片 */
+    private void useCamera() {
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+        startActivityForResult(intent, 1);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            String sdStatus = Environment.getExternalStorageState();
+            if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd卡是否可用
+                return;
+            }
+
+            String name = new DateFormat().format(
+                    "yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
+
+            Toast.makeText(getActivity(), name, Toast.LENGTH_LONG).show();
+            Bundle bundle = data.getExtras();
+
+            // 获取相机返回的数据，并转换为Bitmap图片格式
+            Bitmap bitmap = (Bitmap) bundle.get("data");
+            FileOutputStream b = null;
+            File file = new File("/sdcard/myImage/");
+            file.mkdirs();// 创建文件夹
+            String fileName = "/sdcard/myImage/" + name;
+
+            try {
+                b = new FileOutputStream(fileName);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    b.flush();
+                    b.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
 }
 
 
