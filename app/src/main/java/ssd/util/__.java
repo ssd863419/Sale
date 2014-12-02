@@ -16,9 +16,15 @@ import ssd.sale.R;
 public class __ {
     private static Toast toast;
     private static TextView textView;
+
+
+    // TODO 完成了, 测试后把这个删除掉 String text 這邊有問題, 要可以滿足String, 要可以滿足R.string.xxx
+    public static void toast(Activity activity, int resId, int duration) {
+        __.toast(activity, activity.getString(resId), duration);
+    }
+
     public static void toast(Activity activity, String text, int duration) {
         // TODO 有空來改寫出好看的Toast
-        // TODO String text 這邊有問題, 要可以滿足String, 要可以滿足R.string.xxx
         if (toast == null) {
             LayoutInflater inflater = activity.getLayoutInflater();
             View layout = inflater.inflate(R.layout.toast, (ViewGroup) activity.findViewById(R.id.llToast));

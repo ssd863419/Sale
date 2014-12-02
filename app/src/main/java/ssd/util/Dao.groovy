@@ -12,12 +12,14 @@ public class Dao {
     
 
     public Dao(cxt) {
-        DataHelper dh = new DataHelper(cxt.getActivity());
+        DataHelper dh = new DataHelper(cxt.getActivity())
         db = dh.getReadableDatabase()
     }
 
     public SqlList getGongYSMC() {
-        Cursor cursor = db.query("fuZXD003", ["_id", "gongYSMC"], "shiFQY = ?", ["1"], null, null, "gongYSMC", null)
+        String[] cols = ["_id", "gongYSMC"]
+        String[] args = ["1"]
+        Cursor cursor = db.query("fuZXD003", cols, "shiFQY = ?", args, null, null, "gongYSMC", null)
         return Sql.parseCursor(cursor)
     }
 

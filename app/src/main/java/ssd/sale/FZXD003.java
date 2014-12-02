@@ -36,6 +36,7 @@ import ssd.util.Dao;
 import ssd.util.Sql;
 import ssd.util.SqlList;
 import ssd.util._;
+import ssd.util.__;
 
 /**
  * Created by Administrator on 2014/11/29.
@@ -74,6 +75,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         initView(v);
         initImage();
         queryGongYS();
+
+        __.toast(getActivity(), R.string.app_name, Toast.LENGTH_SHORT);
 
         return v;
     }
