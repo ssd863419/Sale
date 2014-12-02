@@ -114,7 +114,8 @@
             android:id="@+id/myET_jingHJ"
             android:layout_marginLeft="5dp"
             android:singleLine="true"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:text="0" />
     </LinearLayout>
 
     <LinearLayout
@@ -136,7 +137,8 @@
             android:id="@+id/myET_biaoZSJ"
             android:layout_marginLeft="5dp"
             android:singleLine="true"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:text="0" />
     </LinearLayout>
 
     <LinearLayout
@@ -158,7 +160,8 @@
             android:id="@+id/myET_jianS"
             android:layout_marginLeft="5dp"
             android:singleLine="true"
-            android:inputType="number" />
+            android:inputType="number"
+            android:text="1" />
     </LinearLayout>
 
     <LinearLayout
@@ -180,6 +183,33 @@
             android:id="@+id/myET_huoPBZ"
             android:layout_marginLeft="5dp"
             android:singleLine="true" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal">
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/qiY"
+                android:id="@+id/myRB_check"
+                android:checked="true" />
+
+            <RadioButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/tingY"
+                android:id="@+id/myRB_uncheck"
+                android:textColor="@color/red" />
+        </RadioGroup>
     </LinearLayout>
 
     <LinearLayout

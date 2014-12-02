@@ -30,6 +30,7 @@ import ssd.util.Sql;
 import ssd.util.SqlList;
 import ssd.util.SqlMap;
 import ssd.util._;
+import ssd.util.__;
 
 /**
  * Created by Administrator on 2014/11/18.
@@ -139,7 +140,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         }
     }
 
-    /* 控制儲存Button的使用 */
+    /* 根據供應商名稱的TextView, 來控制儲存Button的使用 */
     private TextWatcher buttonState = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {

@@ -20,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,10 @@ import ssd.util.SqlList;
  * Created by Administrator on 2014/11/29.
  */
 public class FZXD003 extends Fragment implements Button.OnClickListener {
+    // TODO 停用的情況, 需判斷是否有售出資料
+    // TODO 標準售價旁, 增加計算鈕, 跳出AlertFragment, 顯示自動計算的方式(幾筆選項: 進價*? +? = ?, 取整數?)
+    // TODO 進入輸入框之後, 預設全選資料
+    // TODO 沒有圖片的情況, 在顯示的圖片畫面, 顯示其供應商+供應商型號
     private Button mBtn_paiZ;           // 拍照 按鈕
     private Button mBtn_benDT;          // 本地圖 按鈕
     private Button mBtn_liST;           // 歷史圖 按鈕
@@ -53,6 +58,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private EditText mET_biaoZSJ;       // 標準售價
     private EditText mET_jianS;         // 件數
     private EditText mET_huoPBZ;        // 貨品備註
+    private RadioButton mRB_check;      // 啟用
+    private RadioButton mRB_uncheck;    // 停用
     private Db db;
     private SQLiteDatabase database_gongYS;         // 供應商的database
     private Cursor cursor_gongYS;                   // 供應商的cursor
@@ -60,6 +67,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private ssd.util.SpinnerAdapter adapter_gongYS; // 供應商的adapter
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
+    private Bitmap bitmap;              // 取得的圖片
+    private int _id = -1;               // 貨品資料檔的_id, -1 代表新增的情況
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -87,6 +96,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         mET_biaoZSJ = (EditText) view.findViewById(R.id.myET_biaoZSJ);
         mET_jianS = (EditText) view.findViewById(R.id.myET_jianS);
         mET_huoPBZ = (EditText) view.findViewById(R.id.myET_huoPBZ);
+        mRB_check = (RadioButton) view.findViewById(R.id.myRB_check);
+        mRB_uncheck = (RadioButton) view.findViewById(R.id.myRB_uncheck);
         db = new Db(getActivity());
         database_gongYS = db.getReadableDatabase();
 
@@ -112,6 +123,30 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
                 }
 
                 break;
+
+            case R.id.myBtn_chuC:
+                // TODO 新增與修改情況的分別處理
+                save(_id);      // 儲存
+
+                break;
+
+            case R.id.myBtn_xiaYB:
+                // TODO 下一筆的處理
+
+                break;
+
+            case R.id.myBtn_chaX:
+                // TODO 點擊查詢, 跳出AlertFragment, 顯示貨品查詢畫面, 返回時, 畫面不更新
+
+                break;
+
+            case R.id.myBtn_liST:
+                // TODO 歷史圖, 顯示曾經入系統的圖片, 點擊後, 帶出歷史資料
+
+                break;
+
+            case R.id.myBtn_benDT:
+                // TODO 本地圖, 點選本地圖庫
         }
     }
 
@@ -126,6 +161,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
     /* 供應商的資料 */
     private void queryGongYS() {
+        // TODO 新增的情況, 下拉框的首筆資料, 預設空值, 儲存時, 判斷提示是否有選供應商
+        // TODO 根據供應商+供應商型號, 帶出最近的歷史資料
         cursor_gongYS = database_gongYS.query(
                 "fuZXD003", new String[] {"_id", "gongYSMC"}, "shiFQY = ?", new String[] {"1"},
                 null, null, "gongYSMC", null);
@@ -174,13 +211,13 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
             }
 
             String name = new DateFormat().format(
-                    "yyyyMMdd_hhmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
+                    "yyyyMMdd_HHmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
 
             Toast.makeText(getActivity(), name, Toast.LENGTH_LONG).show();
             Bundle bundle = data.getExtras();
 
             // 获取相机返回的数据，并转换为Bitmap图片格式
-            Bitmap bitmap = (Bitmap) bundle.get("data");
+            bitmap = (Bitmap) bundle.get("data");
             FileOutputStream b = null;
             File file = new File("/sdcard/myImage/");
             file.mkdirs();// 创建文件夹
@@ -256,6 +293,25 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
         return result;
     }
+
+    private void save(int _id) {
+        // TODO 進價, 售價, 件數, 需另寫method, 控制大於等於0, 到小數2位
+        // TODO 判斷圖片 或 供應商+供應商型號, 至少其中一個條件須滿足
+
+
+    }
+
+    private float chkPrice(String price) {
+        float result;
+
+        if (price == null) {
+            result = 0;
+        } else {
+            result = price.charAt(price.indexOf('.') + 2);
+        }
+        return result;
+    }
+
 }
 
 

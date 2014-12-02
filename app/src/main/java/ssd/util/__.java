@@ -17,6 +17,8 @@ public class __ {
     private static Toast toast;
     private static TextView textView;
     public static void toast(Activity activity, String text, int duration) {
+        // TODO 有空來改寫出好看的Toast
+        // TODO String text 這邊有問題, 要可以滿足String, 要可以滿足R.string.xxx
         if (toast == null) {
             LayoutInflater inflater = activity.getLayoutInflater();
             View layout = inflater.inflate(R.layout.toast, (ViewGroup) activity.findViewById(R.id.llToast));
