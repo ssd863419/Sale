@@ -13,6 +13,8 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,12 +31,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Calendar;
-import java.util.Locale;
+import java.text.DecimalFormat;
+import java.util.Formatter;
 
 import ssd.util.Dao;
-import ssd.util.Sql;
-import ssd.util.SqlList;
 import ssd.util._;
 import ssd.util.__;
 
@@ -76,8 +76,6 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         initImage();
         queryGongYS();
 
-        __.toast(getActivity(), R.string.app_name, Toast.LENGTH_SHORT);
-
         return v;
     }
 
@@ -108,6 +106,11 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         mBtn_chuC.setOnClickListener(this);
         mBtn_xiaYB.setOnClickListener(this);
         mBtn_chaX.setOnClickListener(this);
+
+        /* 檢查進貨價, 標準售價, 件數的輸入資料, 改成規範的 x.xx */
+        mET_jingHJ.setOnFocusChangeListener(chkNumber);
+        mET_biaoZSJ.setOnFocusChangeListener(chkNumber);
+        mET_jianS.setOnFocusChangeListener(chkNumber);
     }
 
     @Override
@@ -178,9 +181,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         PackageManager packageManager = context.getPackageManager();
 
         if(!packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA)){
-            Toast.makeText(getActivity(),
-                    "This device does not have a camera.",
-                    Toast.LENGTH_SHORT).show();
+            __.toast(getActivity(), "This device does not have a camera.", Toast.LENGTH_SHORT);
             return false;
         } else {
             return true;
@@ -207,8 +208,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
             }
 
             String name = _.now("yyyyMMdd_HHmmss") + ".jpg";
-
-            Toast.makeText(getActivity(), name, Toast.LENGTH_LONG).show();
+            __.toast(getActivity(), name, Toast.LENGTH_SHORT);
             Bundle bundle = data.getExtras();
 
             // 获取相机返回的数据，并转换为Bitmap图片格式
@@ -296,17 +296,47 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
     }
 
-    private float chkPrice(String price) {
-        float result;
+    private String chkPrice(String price) {
+        String result;
 
         if (price == null) {
-            result = 0;
+            result = "0";
         } else {
-            result = price.charAt(price.indexOf('.') + 2);
+            try {
+                result = new Formatter().format("%.2f", Double.parseDouble(price)).toString();
+            } catch (NumberFormatException e) {
+                result = "0";
+                e.printStackTrace();
+            }
         }
+        System.out.println("--------------------------" + result);
         return result;
     }
 
+    EditText.OnFocusChangeListener chkNumber = new EditText.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View view, boolean hasFocus) {
+            if (!mET_jingHJ.hasFocus()) {
+                chkPrice(mET_jingHJ.getText().toString());
+                mET_jingHJ.setText("");
+            }
+//            switch (view.getId()) {
+//                case R.id.myET_jingHJ:
+//                        if (!mET_jingHJ.hasFocus()) {
+//                            chkPrice(mET_jingHJ.getText().toString());
+//                        }
+//                    break;
+//
+//                case R.id.myET_biaoZSJ:
+//
+//                    break;
+//
+//                case R.id.myET_jianS:
+//
+//                    break;
+//            }
+        }
+    };
 }
 
 

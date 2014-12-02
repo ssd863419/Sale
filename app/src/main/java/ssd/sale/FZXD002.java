@@ -298,7 +298,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 }
             }).start();
 
-            Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
+            __.toast(getActivity(),R.string.chuCCG, Toast.LENGTH_SHORT);
             mButton_next.setEnabled(true);      // 下一筆鈕enable
 
         }
@@ -335,7 +335,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
                 }
             }).start();
 
-            Toast.makeText(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT).show();
+            __.toast(getActivity(), R.string.chuCCG,Toast.LENGTH_SHORT);
             mButton_next.setEnabled(true);      // 下一筆鈕enable
         }
     }

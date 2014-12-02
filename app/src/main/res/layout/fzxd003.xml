@@ -114,8 +114,8 @@
             android:id="@+id/myET_jingHJ"
             android:layout_marginLeft="5dp"
             android:singleLine="true"
-            android:inputType="numberDecimal"
-            android:text="0" />
+            android:text="0"
+            android:inputType="numberDecimal" />
     </LinearLayout>
 
     <LinearLayout
