@@ -32,9 +32,10 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Locale;
 
-import ssd.util.Db;
+import ssd.util.Dao;
 import ssd.util.Sql;
 import ssd.util.SqlList;
+import ssd.util._;
 
 /**
  * Created by Administrator on 2014/11/29.
@@ -60,10 +61,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private EditText mET_huoPBZ;        // 貨品備註
     private RadioButton mRB_check;      // 啟用
     private RadioButton mRB_uncheck;    // 停用
-    private Db db;
-    private SQLiteDatabase database_gongYS;         // 供應商的database
-    private Cursor cursor_gongYS;                   // 供應商的cursor
-    private SqlList list_gongYS;                    // 供應商的list
+    private Dao dao;                    // Dao
     private ssd.util.SpinnerAdapter adapter_gongYS; // 供應商的adapter
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
@@ -98,8 +96,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         mET_huoPBZ = (EditText) view.findViewById(R.id.myET_huoPBZ);
         mRB_check = (RadioButton) view.findViewById(R.id.myRB_check);
         mRB_uncheck = (RadioButton) view.findViewById(R.id.myRB_uncheck);
-        db = new Db(getActivity());
-        database_gongYS = db.getReadableDatabase();
+
+        dao = new Dao(this);
 
         mBtn_paiZ.setOnClickListener(this);
         mBtn_benDT.setOnClickListener(this);
@@ -163,15 +161,10 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private void queryGongYS() {
         // TODO 新增的情況, 下拉框的首筆資料, 預設空值, 儲存時, 判斷提示是否有選供應商
         // TODO 根據供應商+供應商型號, 帶出最近的歷史資料
-        cursor_gongYS = database_gongYS.query(
-                "fuZXD003", new String[] {"_id", "gongYSMC"}, "shiFQY = ?", new String[] {"1"},
-                null, null, "gongYSMC", null);
-
-        list_gongYS = Sql.parseCursor(cursor_gongYS);
 
         adapter_gongYS = new ssd.util.SpinnerAdapter(
                 getActivity(), android.R.layout.simple_spinner_item,
-                list_gongYS.toSpinnerArray("_id", "gongYSMC"));
+                dao.getGongYSMC().toSpinnerArray("_id", "gongYSMC"));
 
         mSpinner.setAdapter(adapter_gongYS);
     }
@@ -210,8 +203,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
                 return;
             }
 
-            String name = new DateFormat().format(
-                    "yyyyMMdd_HHmmss", Calendar.getInstance(Locale.CHINA)) + ".jpg";
+            String name = _.now("yyyyMMdd_HHmmss") + ".jpg";
 
             Toast.makeText(getActivity(), name, Toast.LENGTH_LONG).show();
             Bundle bundle = data.getExtras();

@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import ssd.util.Db;
+import ssd.util.DataHelper;
 import ssd.util.SqlList;
 import ssd.util.SqlMap;
 import ssd.util.Sql;
@@ -31,7 +31,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
     private FZXD002 fzxd002;
     private FragmentManager fragmentManager;
     private SqlList list;
-    private Db db;
+    private DataHelper db;
     private SQLiteDatabase database;
     private Cursor cursor;
 
@@ -55,7 +55,7 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         fragmentManager = getFragmentManager();
         mButton_XinZ.setOnClickListener(this);
 
-        db = new Db(getActivity());
+        db = new DataHelper(getActivity());
         database = db.getWritableDatabase();
 
         if (cursor == null) {

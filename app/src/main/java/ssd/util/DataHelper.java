@@ -9,11 +9,11 @@ import ssd.util.Sql;
 /**
  * Created by Administrator on 2014/11/22.
  */
-public class Db extends SQLiteOpenHelper {
+public class DataHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "fuZXD.db";
     private static final int DATABASE_VERSION = 1;
 
-    public Db(Context context) {
+    public DataHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

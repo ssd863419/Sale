@@ -23,9 +23,8 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import java.util.Calendar;
-import java.util.Map;
 
-import ssd.util.Db;
+import ssd.util.DataHelper;
 import ssd.util.Sql;
 import ssd.util.SqlList;
 import ssd.util.SqlMap;
@@ -53,7 +52,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     private TableRow mTableRow2;            //用來隱藏顯示聯繫人電話欄3
     private FragmentManager fragmentManager;
     private FZXD001 fzxd001;
-    private Db db;
+    private DataHelper db;
     SQLiteDatabase database;
     private long _id = -1;                          // 用來判斷目前是處於修改資料, 或新增資料(-1)
 
@@ -83,7 +82,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         mTableRow2 = (TableRow) view.findViewById(R.id.myTableRow2);
         fragmentManager = getFragmentManager();
         fzxd001 = new FZXD001();
-        db = new Db(getActivity());
+        db = new DataHelper(getActivity());
         database = db.getWritableDatabase();
 
         mButton_save.setOnClickListener(this);
