@@ -297,19 +297,17 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     }
 
     private String chkPrice(String price) {
-        String result;
-
-        if (price == null) {
-            result = "0";
-        } else {
+        String result = "0";
+        if (price != null) {
             try {
-                result = new Formatter().format("%.2f", Double.parseDouble(price)).toString();
+                //result = new Formatter().format("%.2f", Double.parseDouble(price)).toString();
+                double d = Double.parseDouble(price); // 轉成 dobule
+                double r = (double) Math.round(d * 100) / 100d; // 四捨五入, 但是要轉型回 double 去做除法
+                result = String.valueOf(r);
             } catch (NumberFormatException e) {
-                result = "0";
-                e.printStackTrace();
+                // DO NOTHING. 因為有問題就返回 0, 所以出錯就不要做任何事
             }
         }
-        System.out.println("--------------------------" + result);
         return result;
     }
 
@@ -317,8 +315,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         @Override
         public void onFocusChange(View view, boolean hasFocus) {
             if (!mET_jingHJ.hasFocus()) {
-                chkPrice(mET_jingHJ.getText().toString());
-                mET_jingHJ.setText("");
+                String foo = chkPrice(mET_jingHJ.getText().toString());
+                mET_jingHJ.setText(foo);
             }
 //            switch (view.getId()) {
 //                case R.id.myET_jingHJ:

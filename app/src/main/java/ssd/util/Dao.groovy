@@ -16,10 +16,10 @@ public class Dao {
         db = dh.getReadableDatabase()
     }
 
+    // TODO: 考慮要不要把是否啟用放到參數上
     public SqlList getGongYSMC() {
-        String[] cols = ["_id", "gongYSMC"]
         String[] args = ["1"]
-        Cursor cursor = db.query("fuZXD003", cols, "shiFQY = ?", args, null, null, "gongYSMC", null)
+        Cursor cursor = db.query("fuZXD003", null, "shiFQY = ?", args, null, null, "gongYSMC", null)
         return Sql.parseCursor(cursor)
     }
 
