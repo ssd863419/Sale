@@ -14,8 +14,6 @@
         android:id="@+id/myTextView_gongYSMC"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="false"
         android:gravity="center"
         android:singleLine="true" />
 
@@ -24,7 +22,9 @@
         android:layout_height="wrap_content"
         android:text=" : "
         android:id="@+id/textView2"
-        android:layout_alignRight="@id/myTextView_gongYSMC" />
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/myTextView_gongYSMC"
+        android:layout_toEndOf="@id/myTextView_gongYSMC" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,7 +32,8 @@
         android:text="New Text"
         android:id="@+id/myTextView_lianXRDH"
         android:autoLink="phone"
-        android:layout_toRightOf="@id/textView2" />
+        android:layout_toRightOf="@id/textView2"
+        android:layout_toEndOf="@id/textView2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,6 +52,7 @@
         android:id="@+id/myTextView_lianXRDH3"
         android:layout_below="@id/myTextView_lianXRDH2"
         android:layout_toRightOf="@id/textView2"
+        android:layout_toEndOf="@id/textView2"
         android:autoLink="phone" />
 
 </RelativeLayout>

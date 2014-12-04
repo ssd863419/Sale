@@ -60,6 +60,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private EditText mET_huoPBZ;        // 貨品備註
     private RadioButton mRB_check;      // 啟用
     private RadioButton mRB_uncheck;    // 停用
+    private FZXD004 fzxd004;            // 貨品查詢畫面
     private Dao dao;                    // Dao
     private DataHelper db;
     private SQLiteDatabase database;
@@ -101,6 +102,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         dao = new Dao(this);
         db = new DataHelper(getActivity());
         database = db.getWritableDatabase();
+        fzxd004 = new FZXD004();
 
         mBtn_paiZ.setOnClickListener(this);
         mBtn_benDT.setOnClickListener(this);
@@ -156,7 +158,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
             // 查詢
             case R.id.myBtn_chaX:
-                // TODO 點擊查詢, 跳出AlertFragment, 顯示貨品查詢畫面, 返回時, 畫面不更新
+                transaction.replace(R.id.content, fzxd004).commit();
 
                 break;
 

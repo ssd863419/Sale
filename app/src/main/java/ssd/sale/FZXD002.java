@@ -53,7 +53,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
     private FragmentManager fragmentManager;
     private FZXD001 fzxd001;
     private DataHelper db;
-    SQLiteDatabase database;
+    private SQLiteDatabase database;
     private long _id = -1;                          // 用來判斷目前是處於修改資料, 或新增資料(-1)
 
     @Override

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent" android:layout_height="fill_parent">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/myImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_jinHR"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/myImage"
+        android:layout_toEndOf="@id/myImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_gongYSMC"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/myTv_jinHJ"
+        android:layout_toEndOf="@id/myTv_jinHJ" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_huoPBZ"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/myTv_gongYSMC"
+        android:layout_toEndOf="@id/myTv_gongYSMC" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_jinHJ"
+        android:layout_below="@id/myTv_jinHR"
+        android:layout_toRightOf="@id/myImage"
+        android:layout_toEndOf="@id/myImage" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_biaoZSJ"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/myTv_jinHJ"
+        android:layout_toEndOf="@id/myTv_jinHJ" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_jinHJS"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/myTv_biaoZSJ"
+        android:layout_toEndOf="@id/myTv_biaoZSJ" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_xiaoSJS"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/myTv_jinHJS"
+        android:layout_toEndOf="@id/myTv_jinHJS" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_shengYJS"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/myTv_xiaoSJS"
+        android:layout_toEndOf="@id/myTv_xiaoSJS" />
+
+</RelativeLayout>

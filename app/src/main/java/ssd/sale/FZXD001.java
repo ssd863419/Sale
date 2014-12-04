@@ -27,11 +27,11 @@ import ssd.util._;
  * Created by Administrator on 2014/11/15.
  */
 public class FZXD001 extends ListFragment implements Button.OnClickListener {
-    private Button mButton_XinZ;
-    private CheckBox mCheckBox;
-    private FZXD002 fzxd002;
+    private Button mButton_XinZ;                // 新增
+    private CheckBox mCheckBox;                 // 顯示啟用的checkbox
+    private FZXD002 fzxd002;                    // 供應商的編輯畫面
     private FragmentManager fragmentManager;
-    private SqlList list;
+    private SqlList list;                       // 選換供應商spinner的 key, value
     private DataHelper db;
     private SQLiteDatabase database;
     private Cursor cursor;
@@ -56,6 +56,8 @@ public class FZXD001 extends ListFragment implements Button.OnClickListener {
         fzxd002 = new FZXD002();
         fragmentManager = getFragmentManager();
         mButton_XinZ.setOnClickListener(this);
+        db = new DataHelper(getActivity());
+        database = db.getWritableDatabase();
 
         dao = new Dao(this);
         list = dao.getGongYSMC();

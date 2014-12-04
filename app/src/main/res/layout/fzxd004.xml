@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/fanH"
+            android:id="@+id/myBtn_fanH" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shaiX"
+            android:id="@+id/myBtn_shaiX" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/zhiKT"
+            android:id="@+id/myCb_zhiKT" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myTv_sum" />
+
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="right">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x2"
+            android:id="@+id/radioButton" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x3"
+            android:id="@+id/radioButton2" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x4"
+            android:id="@+id/radioButton3"
+            android:checked="true" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x5"
+            android:id="@+id/radioButton4" />
+    </RadioGroup>
+
+    <ListView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/android:list" />
+
+    <GridView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/gridView" />
+</LinearLayout>
