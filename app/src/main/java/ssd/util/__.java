@@ -52,9 +52,14 @@ public class __ {
     // TODO wxy 確認2個bitmap的轉換method 是否ok
     /* 將bitmap 轉換為 可存入資料庫的blob格式 */
     public static byte[] bitmapToBytes(Bitmap bm){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
-        return baos.toByteArray();
+        if (bm != null) {
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            return baos.toByteArray();
+        } else {
+            return null;
+        }
+
     }
 
     /* 將資料庫的blob格式 轉換為 bitmap */

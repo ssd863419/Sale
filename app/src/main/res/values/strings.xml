@@ -46,6 +46,7 @@
     <string name="lianXRDH">聯繫人電話</string>
     <string name="beiZ">備註</string>
     <string name="chuCCG">儲存成功</string>
+    <string name="chuCSB">儲存失敗</string>
     <string name="gongYSMCCF">供應商名稱重複</string>
     <string name="queR">確認</string>
     <string name="tianJ">Add</string>

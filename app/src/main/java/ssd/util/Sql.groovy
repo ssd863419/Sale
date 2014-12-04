@@ -37,7 +37,7 @@ public class Sql {
                 jinHR TEXT NOT NULL,
                 jianS INTEGER NOT NULL,
                 huoPBZ TEXT NOT NULL,
-                huoPTP BLOB NOT NULL,
+                huoPTP BLOB,
                 fuZXD003_id INTEGER NOT NULL,
                 gongYSXH TEXT NOT NULL,
                 shiFQY INTEGER NOT NULL,

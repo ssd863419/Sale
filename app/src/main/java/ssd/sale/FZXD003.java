@@ -66,8 +66,6 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private ssd.util.SpinnerAdapter adapter_gongYS; // 供應商的adapter
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
-
-
     private Bitmap bitmap;              // 取得的圖片資料
     private long _id = -1;               // 貨品資料檔的_id, -1 代表新增的情況
 
@@ -123,6 +121,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         transaction = fragmentManager.beginTransaction();
 
         switch (view.getId()) {
+            // 拍照按鈕
             case R.id.myBtn_paiZ:
                 // TODO 要確認使用者的手機的開發者選項, 是否有勾選"不要保留活動"
                 // 確認有攝像頭, 在進行拍照取圖
@@ -132,27 +131,42 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
                 break;
 
+            // 儲存按鈕
             case R.id.myBtn_chuC:
                 // TODO 新增與修改情況的分別處理
                 save();      // 儲存
 
                 break;
 
+            // 下一筆
             case R.id.myBtn_xiaYB:
-                // TODO 下一筆的處理
+                // 點擊下一筆時, 供應商的spinner需要停留在之前的選擇
+                _id = -1;
+                mImage.setImageDrawable(null);
+                bitmap = null;
+                mET_gongYSXH.setText("");
+                mET_jingHJ.setText("0.0");
+                mET_biaoZSJ.setText("0.0");
+                mET_jianS.setText("1");
+                mET_huoPBZ.setText("");
+                mRB_check.setChecked(true);
+                initImage();
 
                 break;
 
+            // 查詢
             case R.id.myBtn_chaX:
                 // TODO 點擊查詢, 跳出AlertFragment, 顯示貨品查詢畫面, 返回時, 畫面不更新
 
                 break;
 
+            // 歷史圖按鈕
             case R.id.myBtn_liST:
                 // TODO 歷史圖, 顯示曾經入系統的圖片, 點擊後, 帶出歷史資料
 
                 break;
 
+            // 本地圖按鈕
             case R.id.myBtn_benDT:
                 // TODO 本地圖, 點選本地圖庫
         }
@@ -162,8 +176,10 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private void initImage() {
         if (mImage.getDrawable() == null) {
             mTv_img.setVisibility(View.VISIBLE);
+            mImage.setVisibility(View.GONE);
         } else {
             mTv_img.setVisibility(View.GONE);
+            mImage.setVisibility(View.VISIBLE);
         }
     }
 
@@ -337,6 +353,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
                         long endTime = Calendar.getInstance().getTimeInMillis();
                         Thread.sleep((endTime - startTime < 500) ? 500 : 0);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -398,7 +415,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         values.put("crtDay", _.now());
         values.put("updDay", _.now());
 
-        return database.insert("fuZXD003", null, values);
+        return database.insert("fuZXD002", null, values);
     }
 
 
