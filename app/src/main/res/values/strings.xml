@@ -66,5 +66,7 @@
     <string name="gongYSMCBXYZL">供應商名稱必須有資料</string>
     <string name="gongYSXHHDCLSZL">輸入型號會帶出歷史資料</string>
     <string name="noImageShow">1.可拍照取圖 \n2.可從本地圖庫取圖 \n3.選歷史圖會帶出歷史資料 </string>
+    <string name="qingXZGYS">請選擇供應商</string>
+    <string name="tuPHGYSXHXYZL">圖片或供應商型號, 須有資料</string>
 
 </resources>

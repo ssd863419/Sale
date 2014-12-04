@@ -1,12 +1,16 @@
 package ssd.util;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 import ssd.sale.R;
 
@@ -43,6 +47,24 @@ public class __ {
         //toast.setGravity(Gravity.TOP, 0, 200);                // 靠上
         //toast.setGravity(Gravity.BOTTOM, 0, 100);             // 靠下
         toast.show();
+    }
+
+    // TODO wxy 確認2個bitmap的轉換method 是否ok
+    /* 將bitmap 轉換為 可存入資料庫的blob格式 */
+    public static byte[] bitmapToBytes(Bitmap bm){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        return baos.toByteArray();
+    }
+
+    /* 將資料庫的blob格式 轉換為 bitmap */
+    public static Bitmap bytesToBimap(byte[] b){
+        if(b.length != 0){
+            return BitmapFactory.decodeByteArray(b, 0, b.length);
+        }
+        else {
+            return null;
+        }
     }
 
 }
