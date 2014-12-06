@@ -71,5 +71,10 @@
     <string name="tuPHGYSXHXYZL">圖片或供應商型號, 須有資料</string>
     <string name="zhiKT">只看圖</string>
     <string name="shaiX">篩選</string>
+    <string name="jin">進</string>
+    <string name="shou">售</string>
+    <string name="yu">餘</string>
+    <string name="yuan">元</string>
+    <string name="jian">件</string>
 
 </resources>

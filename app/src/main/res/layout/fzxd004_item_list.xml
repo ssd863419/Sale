@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent" android:layout_height="fill_parent">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical">
 
     <ImageView
         android:layout_width="50dp"
@@ -11,7 +13,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="text"
         android:id="@+id/myTv_jinHR"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/myImage"
@@ -20,17 +22,26 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTv_gongYSMC"
+        android:text=" | "
+        android:id="@+id/tag1"
         android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/myTv_jinHJ"
-        android:layout_toEndOf="@id/myTv_jinHJ" />
+        android:layout_toRightOf="@id/myTv_jinHR"
+        android:layout_toEndOf="@id/myTv_jinHR" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTv_huoPBZ"
+        android:text="text"
+        android:id="@+id/myTv_gongYSMC"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/tag1"
+        android:layout_toEndOf="@id/tag1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" | "
+        android:id="@+id/tag2"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/myTv_gongYSMC"
         android:layout_toEndOf="@id/myTv_gongYSMC" />
@@ -38,8 +49,17 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTv_jinHJ"
+        android:text="text"
+        android:id="@+id/myTv_huoPBZ"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/tag2"
+        android:layout_toEndOf="@id/tag2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/jin"
+        android:id="@+id/tag3"
         android:layout_below="@id/myTv_jinHR"
         android:layout_toRightOf="@id/myImage"
         android:layout_toEndOf="@id/myImage" />
@@ -47,8 +67,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTv_biaoZSJ"
+        android:text="text"
+        android:id="@+id/myTv_jinHJ"
+        android:layout_below="@id/myTv_jinHR"
+        android:layout_toRightOf="@id/tag3"
+        android:layout_toEndOf="@id/tag3"
+        android:paddingLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/yuan"
+        android:id="@+id/tag4"
         android:layout_below="@+id/myTv_jinHR"
         android:layout_toRightOf="@id/myTv_jinHJ"
         android:layout_toEndOf="@id/myTv_jinHJ" />
@@ -56,17 +86,18 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
+        android:text="text"
         android:id="@+id/myTv_jinHJS"
         android:layout_below="@+id/myTv_jinHR"
-        android:layout_toRightOf="@id/myTv_biaoZSJ"
-        android:layout_toEndOf="@id/myTv_biaoZSJ" />
+        android:layout_toRightOf="@id/tag4"
+        android:layout_toEndOf="@id/tag4"
+        android:paddingLeft="5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTv_xiaoSJS"
+        android:text="@string/jian"
+        android:id="@+id/tag5"
         android:layout_below="@+id/myTv_jinHR"
         android:layout_toRightOf="@id/myTv_jinHJS"
         android:layout_toEndOf="@id/myTv_jinHJS" />
@@ -74,10 +105,94 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTv_shengYJS"
+        android:text=" | "
+        android:id="@+id/tag6"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/tag5"
+        android:layout_toEndOf="@id/tag5" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/shou"
+        android:id="@+id/tag7"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/tag6"
+        android:layout_toEndOf="@id/tag6" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:id="@+id/myTv_biaoZSJ"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/tag7"
+        android:layout_toEndOf="@id/tag7"
+        android:paddingLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/yuan"
+        android:id="@+id/tag8"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/myTv_biaoZSJ"
+        android:layout_toEndOf="@id/myTv_biaoZSJ" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:id="@+id/myTv_xiaoSJS"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/tag8"
+        android:layout_toEndOf="@id/tag8"
+        android:paddingLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/jian"
+        android:id="@+id/tag9"
         android:layout_below="@+id/myTv_jinHR"
         android:layout_toRightOf="@id/myTv_xiaoSJS"
         android:layout_toEndOf="@id/myTv_xiaoSJS" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" | "
+        android:id="@+id/tag10"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/tag9"
+        android:layout_toEndOf="@id/tag9" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/yu"
+        android:id="@+id/tag11"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/tag10"
+        android:layout_toEndOf="@id/tag10" />
+
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="text"
+    android:id="@+id/myTv_shengYJS"
+    android:layout_below="@+id/myTv_jinHR"
+    android:layout_toRightOf="@id/tag11"
+    android:layout_toEndOf="@id/tag11"
+        android:paddingLeft="5dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/jian"
+        android:id="@+id/tag12"
+        android:layout_below="@+id/myTv_jinHR"
+        android:layout_toRightOf="@id/myTv_shengYJS"
+        android:layout_toEndOf="@id/myTv_shengYJS" />
 
 </RelativeLayout>

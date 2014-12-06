@@ -2,6 +2,7 @@ package ssd.util;
 
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,6 +34,9 @@ public class ViewMap extends HashMap {
         return (TextView) this.get(id);
     }
 
+    public ImageView getImageView(int id) {
+        return (ImageView) this.get(id);
+    }
 
     // TODO: 還有好多沒寫 有用到再寫
 

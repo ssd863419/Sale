@@ -39,41 +39,42 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:id="@+id/myRg_columnNumber"
         android:gravity="right">
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="x2"
-            android:id="@+id/radioButton" />
+            android:id="@+id/myRb_2" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="x3"
-            android:id="@+id/radioButton2" />
+            android:id="@+id/myRb_3" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="x4"
-            android:id="@+id/radioButton3"
+            android:id="@+id/myRb_4"
             android:checked="true" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="x5"
-            android:id="@+id/radioButton4" />
+            android:id="@+id/myRb_5" />
     </RadioGroup>
 
     <ListView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/android:list" />
+        android:id="@+id/myListView" />
 
     <GridView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:id="@+id/gridView" />
+        android:id="@+id/myGridView" />
 </LinearLayout>

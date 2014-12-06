@@ -54,10 +54,10 @@ public class __ {
     public static byte[] bitmapToBytes(Bitmap bm){
         if (bm != null) {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             return baos.toByteArray();
         } else {
-            return null;
+            return new byte[0];
         }
 
     }
