@@ -1,8 +1,3 @@
-使用 bitbucket 當倉庫
-====
-
-:)
-
 useful links
 ====
 
