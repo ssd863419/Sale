@@ -225,6 +225,8 @@ public class Main extends Activity {
         private Button mButton_dengC;       // 登出
         private FragmentManager fragmentManager;
         private FZXD001 fzxd001;            // 供應商設定畫面
+        private FZXD102 fzxd102;            // 充值
+        private FZXD101 fzxd101;            // 推荐使用者
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -262,8 +264,14 @@ public class Main extends Activity {
                     fzxd001 = new FZXD001();
                     transaction.replace(R.id.content, fzxd001).commit();
                     break;
+                case R.id.myButton_chongZ:
+                    fzxd102 = new FZXD102();
+                    break;
+                case R.id.myButton_tuiJSYZ:
+                    fzxd101 = new FZXD101();
+                    transaction.replace(R.id.content, fzxd101).commit();
+                    break;
                 case R.id.myButton_dengC:
-
                     // TODO: 很奇怪 寫在 _.groovy 就出錯, 所以先搬到 __.java 裡面
                     __.toast(getActivity(), "Hello, World!!\nI am 0_o", Toast.LENGTH_SHORT);
 

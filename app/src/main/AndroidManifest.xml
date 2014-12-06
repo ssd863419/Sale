@@ -5,22 +5,28 @@
     <!-- Required Permissions -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
-            android:name=".Main"
+            android:name="ssd.sale.Main"
             android:label="@string/app_name"
-            android:theme="@style/Basic_SSD">
+            android:theme="@style/Basic_SSD" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="ssd.sale.FZXD102"
+            android:label="@string/title_activity_fzxd102" >
+        </activity>
     </application>
+
 </manifest>
