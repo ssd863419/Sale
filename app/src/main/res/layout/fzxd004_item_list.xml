@@ -50,10 +50,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="text"
-        android:id="@+id/myTv_huoPBZ"
+        android:id="@+id/myTv_gongYSXH"
         android:layout_alignParentTop="true"
         android:layout_toRightOf="@id/tag2"
         android:layout_toEndOf="@id/tag2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=" | "
+        android:id="@+id/tag13"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/myTv_gongYSXH"
+        android:layout_toEndOf="@id/myTv_gongYSXH" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:id="@+id/myTv_huoPBZ"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/tag13"
+        android:layout_toEndOf="@id/tag13" />
 
     <TextView
         android:layout_width="wrap_content"

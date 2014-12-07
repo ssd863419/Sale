@@ -3,6 +3,7 @@ package ssd.util;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import ssd.sale.R;
 public class __ {
     private static Toast toast;
     private static TextView textView;
+    private static DisplayMetrics dm;
 
 
     // TODO 完成了, 测试后把这个删除掉 String text 這邊有問題, 要可以滿足String, 要可以滿足R.string.xxx
@@ -59,7 +61,6 @@ public class __ {
         } else {
             return new byte[0];
         }
-
     }
 
     /* 將資料庫的blob格式 轉換為 bitmap */
@@ -70,6 +71,20 @@ public class __ {
         else {
             return null;
         }
+    }
+
+    /* 取得手機銀幕寬度 */
+    public static int getWidth(Activity activity) {
+        dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
+    }
+
+    /* 取得手機銀幕長度 */
+    public static int getHeight(Activity activity) {
+        dm = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(dm);
+        return dm.heightPixels;
     }
 
 }

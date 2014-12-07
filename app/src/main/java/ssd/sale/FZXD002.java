@@ -156,7 +156,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         }
     };
 
-    public long insert(String gongYSMC, String gongYSDZ, String lianXRXM,
+    private long insert(String gongYSMC, String gongYSDZ, String lianXRXM,
                        String lianXRDH, String lianXRDH2, String lianXRDH3, String beiZ, int shiFQY) {
 
         ContentValues values = new ContentValues();
@@ -175,7 +175,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         return database.insert("fuZXD003", null, values);
     }
 
-    public long update(long key_id, String gongYSMC, String gongYSDZ, String lianXRXM,
+    private long update(long key_id, String gongYSMC, String gongYSDZ, String lianXRXM,
                        String lianXRDH, String lianXRDH2, String lianXRDH3, String beiZ, int shiFQY) {
 
         ContentValues values = new ContentValues();
@@ -193,7 +193,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         return database.update("fuZXD003", values, "_id = ?", new String[]{String.valueOf(key_id)});
     }
 
-    public long getGongYSMC_ID(String[] str) {
+    private long getGongYSMC_ID(String[] str) {
         long old_ID = -1;
         Cursor cursor = database.query(
                 "fuZXD003", null, "gongYSMC = ?", str, null, null, null, null);
@@ -208,7 +208,7 @@ public class FZXD002 extends Fragment implements Button.OnClickListener {
         return old_ID;
     }
 
-    public void query(String[] str) {
+    private void query(String[] str) {
         Cursor cursor = database.query("fuZXD003", null, "_id = ?", str, null, null, null, null);
         SqlList list = Sql.parseCursor(cursor);
         SqlMap map = list.getMyMap(0);

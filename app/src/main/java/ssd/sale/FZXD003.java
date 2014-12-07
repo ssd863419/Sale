@@ -9,6 +9,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -33,6 +34,9 @@ import java.util.Calendar;
 
 import ssd.util.Dao;
 import ssd.util.DataHelper;
+import ssd.util.Sql;
+import ssd.util.SqlList;
+import ssd.util.SqlMap;
 import ssd.util._;
 import ssd.util.__;
 
@@ -74,7 +78,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fzxd003, container, false);
         initView(v);
-        initImage();
+        initText();
         queryGongYS();
 
         return v;
@@ -115,6 +119,12 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         mET_jingHJ.setOnFocusChangeListener(chkNumber);
         mET_biaoZSJ.setOnFocusChangeListener(chkNumber);
 
+        /* 有_id, 代表處於編輯狀態 */
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            _id = Long.valueOf(bundle.getString("_id"));
+            query(new String[]{String.valueOf(_id)});
+        }
     }
 
     @Override
@@ -142,7 +152,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
             // 下一筆
             case R.id.myBtn_xiaYB:
-                // 點擊下一筆時, 供應商的spinner需要停留在之前的選擇
+                // TODO 點擊下一筆時, 供應商的spinner需要停留在之前的選擇
                 _id = -1;
                 mImage.setImageDrawable(null);
                 bitmap = null;
@@ -152,7 +162,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
                 mET_jianS.setText("1");
                 mET_huoPBZ.setText("");
                 mRB_check.setChecked(true);
-                initImage();
+                initText();
 
                 break;
 
@@ -175,7 +185,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     }
 
     /* 沒有顯示圖片之前的文字說明 */
-    private void initImage() {
+    private void initText() {
         if (mImage.getDrawable() == null) {
             mTv_img.setVisibility(View.VISIBLE);
             mImage.setVisibility(View.GONE);
@@ -259,7 +269,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
             }
 
             mImage.setImageBitmap(bitmap);
-            initImage();
+            initText();
         }
     }
 
@@ -368,7 +378,38 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
         /* 修改的處理 */
         if (flag == 0 && _id != -1) {
-            // 修改的動作
+            final ProgressDialog dialog = ProgressDialog.show(
+                    this.getActivity(), null, null, true);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        long startTime = Calendar.getInstance().getTimeInMillis();
+
+                        update(
+                                _id,
+                                Double.valueOf(mET_jingHJ.getText().toString()),
+                                Double.valueOf(mET_biaoZSJ.getText().toString()),
+                                Integer.valueOf(mET_jianS.getText().toString()),
+                                mET_huoPBZ.getText().toString(),
+                                bitmap,
+                                fuZXD003_id,
+                                mET_gongYSXH.getText().toString(),
+                                (mRB_check.isChecked() ? 1 : 0)
+                        );
+
+                        long endTime = Calendar.getInstance().getTimeInMillis();
+                        Thread.sleep((endTime - startTime < 500) ? 500 : 0);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
+            }).start();
+
+            __.toast(getActivity(), R.string.chuCCG, Toast.LENGTH_SHORT);
         }
 
     }
@@ -409,7 +450,7 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         values.put("jinHR", jinHR);
         values.put("jianS", jianS);
         values.put("huoPBZ", huoPBZ);
-        values.put("huoPTP", __.bitmapToBytes(bitmap));
+        values.put("huoPTP", __.bitmapToBytes(huoPTP));
         values.put("fuZXD003_id", fuZXD003_id);
         values.put("gongYSXH", gongYSXH);
         values.put("shiFQY", shiFQY);
@@ -420,6 +461,43 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         return database.insert("fuZXD002", null, values);
     }
 
+    private long update(long key_id, double jinHJ, double biaoZSJ, int jianS, String huoPBZ,
+                        Bitmap huoPTP, int fuZXD003_id, String gongYSXH, int shiFQY) {
+
+        ContentValues values = new ContentValues();
+        values.put("jinHJ", jinHJ);
+        values.put("biaoZSJ", biaoZSJ);
+        values.put("jianS", jianS);
+        values.put("huoPBZ", huoPBZ);
+        values.put("huoPTP", __.bitmapToBytes(huoPTP));
+        values.put("fuZXD003_id", fuZXD003_id);
+        values.put("gongYSXH", gongYSXH);
+        values.put("shiFQY",shiFQY);
+        values.put("prgName", "FZXD003");
+        values.put("updDay", _.now());
+
+        return database.update("fuZXD002", values, "_id = ?", new String[]{String.valueOf(key_id)});
+    }
+
+    private void query(String[] str) {
+        Cursor cursor = database.query("fuZXD002", null, "_id = ?", str, null, null, null, null);
+        SqlList list = Sql.parseCursor(cursor);
+        SqlMap map = list.getMyMap(0);
+
+        mET_gongYSXH.setText(map.getString("gongYSXH"));                // 供應商型號
+        mET_jingHJ.setText(String.valueOf(map.getDouble("jinHJ")));    // 進貨價
+        mET_biaoZSJ.setText(String.valueOf(map.getDouble("biaoZSJ")));  // 標準售價
+        mET_jianS.setText(String.valueOf(map.getInt("jianS")));         // 件數
+        mET_huoPBZ.setText(map.getString("huoPBZ"));                    // 貨品備註
+        mImage.setImageBitmap(__.bytesToBimap(map.getBlob("huoPTP")));  // 貨品圖片
+        bitmap = __.bytesToBimap(map.getBlob("huoPTP"));
+        // TODO 研究 mSapinner 要預設資料庫取出的值
+//        mSpinner.setSelection(map.getInt("fuZXD003_id"));             //供應商spinner
+
+        // 是否啟用
+        mRB_check.setChecked(map.getInt("shiFQY") == 1);
+        mRB_uncheck.setChecked(map.getInt("shiFQY") == 0);
+    }
 
 }
 

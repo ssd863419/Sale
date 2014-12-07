@@ -92,7 +92,8 @@
             android:layout_marginLeft="5dp"
             android:hint="@string/gongYSXHHDCLSZL"
             android:textColorHint="@color/ColdGray"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:selectAllOnFocus="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -115,7 +116,8 @@
             android:layout_marginLeft="5dp"
             android:singleLine="true"
             android:text="0"
-            android:inputType="numberDecimal" />
+            android:inputType="numberDecimal"
+            android:selectAllOnFocus="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -138,7 +140,8 @@
             android:layout_marginLeft="5dp"
             android:singleLine="true"
             android:inputType="numberDecimal"
-            android:text="0" />
+            android:text="0"
+            android:selectAllOnFocus="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -161,7 +164,8 @@
             android:layout_marginLeft="5dp"
             android:singleLine="true"
             android:inputType="number"
-            android:text="1" />
+            android:text="1"
+            android:selectAllOnFocus="true" />
     </LinearLayout>
 
     <LinearLayout
@@ -182,7 +186,8 @@
             android:layout_height="wrap_content"
             android:id="@+id/myET_huoPBZ"
             android:layout_marginLeft="5dp"
-            android:singleLine="true" />
+            android:singleLine="true"
+            android:selectAllOnFocus="true" />
     </LinearLayout>
 
     <LinearLayout

@@ -1,58 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/myRelateLayout"
-    android:paddingTop="6dp"
-    android:paddingBottom="6dp">
+    android:layout_height="fill_parent"
+    android:orientation="horizontal">
 
     <TextView
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:text="New Text"
         android:id="@+id/myTextView_gongYSMC"
         android:textSize="15sp"
         android:textStyle="bold"
-        android:gravity="center"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:gravity="center_vertical|center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=" : "
-        android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@id/myTextView_gongYSMC"
-        android:layout_toEndOf="@id/myTextView_gongYSMC" />
+        android:layout_height="fill_parent"
+        android:text="  :  "
+        android:id="@+id/textView3"
+        android:gravity="center_vertical" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTextView_lianXRDH"
-        android:autoLink="phone"
-        android:layout_toRightOf="@id/textView2"
-        android:layout_toEndOf="@id/textView2" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTextView_lianXRDH2"
-        android:layout_toEndOf="@+id/myTextView_gongYSMC"
-        android:autoLink="phone"
-        android:layout_below="@id/myTextView_lianXRDH"
-        android:layout_toRightOf="@id/textView2" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="New Text"
+            android:id="@+id/myTextView_lianXRDH"
+            android:autoLink="phone"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/myTextView_lianXRDH3"
-        android:layout_below="@id/myTextView_lianXRDH2"
-        android:layout_toRightOf="@id/textView2"
-        android:layout_toEndOf="@id/textView2"
-        android:autoLink="phone" />
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="New Text"
+            android:id="@+id/myTextView_lianXRDH2"
+            android:autoLink="phone"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
 
-</RelativeLayout>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:text="New Text"
+            android:id="@+id/myTextView_lianXRDH3"
+            android:autoLink="phone"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp" />
+    </LinearLayout>
+
+</LinearLayout>
