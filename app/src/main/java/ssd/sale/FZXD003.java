@@ -46,8 +46,6 @@ import ssd.util.__;
 public class FZXD003 extends Fragment implements Button.OnClickListener {
     // TODO 停用的情況, 需判斷是否有售出資料
     // TODO 標準售價旁, 增加計算鈕, 跳出AlertFragment, 顯示自動計算的方式(幾筆選項: 進價*? +? = ?, 取整數?)
-    // TODO 進入輸入框之後, 預設全選資料
-    // TODO 沒有圖片的情況, 在顯示的圖片畫面, 顯示其供應商+供應商型號
     private Button mBtn_paiZ;           // 拍照 按鈕
     private Button mBtn_benDT;          // 本地圖 按鈕
     private Button mBtn_liST;           // 歷史圖 按鈕
@@ -72,7 +70,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private Bitmap bitmap;              // 取得的圖片資料
-    private long _id = -1;               // 貨品資料檔的_id, -1 代表新增的情況
+    private long _id = -1;              // 貨品資料檔的_id, -1 代表新增的情況
+    private int fuZXD003_id = 0;       // 用於供應商spinner的顯示項目
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -152,7 +151,6 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
             // 下一筆
             case R.id.myBtn_xiaYB:
-                // TODO 點擊下一筆時, 供應商的spinner需要停留在之前的選擇
                 _id = -1;
                 mImage.setImageDrawable(null);
                 bitmap = null;
@@ -205,6 +203,11 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
                 dao.getGongYSMC().toSpinnerArray("_id", "gongYSMC"));
 
         mSpinner.setAdapter(adapter_gongYS);
+
+        // 非新增的情況下, spinner預設顯示值(對應table紀錄值)
+        if (_id != -1) {
+            mSpinner.setSelection(getSpinnerPosition(fuZXD003_id));
+        }
     }
 
     /* 檢測是否有攝像頭 */
@@ -325,8 +328,8 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         int flag = 0;       // 用來判斷資料是否可儲存, 0代表可以
 
         // 取得供應商spinner對應的fuZXD003_id
-        final int fuZXD003_id = Integer.valueOf(
-                adapter_gongYS.getGongYS_ID(mSpinner.getSelectedItemPosition()));
+        fuZXD003_id = Integer.valueOf(
+                adapter_gongYS.getID(mSpinner.getSelectedItemPosition()));
 
         // 如果沒有選擇供應商
         if (fuZXD003_id < 0) {
@@ -483,7 +486,9 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         Cursor cursor = database.query("fuZXD002", null, "_id = ?", str, null, null, null, null);
         SqlList list = Sql.parseCursor(cursor);
         SqlMap map = list.getMyMap(0);
+        fuZXD003_id = map.getInt("fuZXD003_id");
 
+        // 供應商spinner的顯示值, 放在queryGongYS()處理
         mET_gongYSXH.setText(map.getString("gongYSXH"));                // 供應商型號
         mET_jingHJ.setText(String.valueOf(map.getDouble("jinHJ")));    // 進貨價
         mET_biaoZSJ.setText(String.valueOf(map.getDouble("biaoZSJ")));  // 標準售價
@@ -491,14 +496,22 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         mET_huoPBZ.setText(map.getString("huoPBZ"));                    // 貨品備註
         mImage.setImageBitmap(__.bytesToBimap(map.getBlob("huoPTP")));  // 貨品圖片
         bitmap = __.bytesToBimap(map.getBlob("huoPTP"));
-        // TODO 研究 mSapinner 要預設資料庫取出的值
-//        mSpinner.setSelection(map.getInt("fuZXD003_id"));             //供應商spinner
 
         // 是否啟用
         mRB_check.setChecked(map.getInt("shiFQY") == 1);
         mRB_uncheck.setChecked(map.getInt("shiFQY") == 0);
     }
 
+    private int getSpinnerPosition(int fuZXD003_id) {
+        int i;
+        for (i = 0 ; i <= fuZXD003_id ; i++) {
+            if (Integer.valueOf(adapter_gongYS.getID(i)) == fuZXD003_id) {
+                break;
+            }
+        }
+
+        return i;
+    }
 }
 
 

@@ -38,14 +38,14 @@ public class SpinnerAdapter extends ArrayAdapter<String[]> {
         return position;
     }
 
-    public String getGongYS_ID(int position) {
+    public String getID(int position) {
         return array[position][0];
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         TextView label = new TextView(context);
-        label.setText(array[position][1]); // 0 value, 1 label
+        label.setText(array[position][1]);      // 0: value, 1: label
         return label;
     }
 
