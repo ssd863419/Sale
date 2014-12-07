@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +13,8 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +26,9 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.Uri;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.Calendar;
 
 import ssd.util.Dao;
@@ -178,7 +177,9 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
 
             // 本地圖按鈕
             case R.id.myBtn_benDT:
-                // TODO 本地圖, 點選本地圖庫
+                getLocalPicture();
+
+                break;
         }
     }
 
@@ -230,23 +231,36 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
         startActivityForResult(intent, 1);
     }
 
+    /* 本地圖庫取照片 */
+    private void getLocalPicture() {
+        Intent intent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(intent, 2);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (resultCode == Activity.RESULT_OK) {
-            int edgeLength;     //用來做為照片的長寬
+        int edgeLength;         //用來做為照片的長寬
 
-            String sdStatus = Environment.getExternalStorageState();
-            if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd卡是否可用
-                return;
+        if (resultCode == Activity.RESULT_OK && requestCode == 1) {
+            bitmap = (Bitmap) data.getExtras().get("data");
+        }
+
+        if (requestCode == 2 && data != null) {
+            Uri uri = data.getData();
+            ContentResolver cr = getActivity().getContentResolver();
+            try {
+                bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
             }
 
-            Bundle bundle = data.getExtras();
+        }
 
-            // 获取相机返回的数据，并转换为Bitmap图片格式
-            bitmap = (Bitmap) bundle.get("data");
-
+        if (bitmap != null) {
             try {
                 edgeLength = (bitmap.getHeight() <= bitmap.getWidth() ?
                         bitmap.getHeight() : bitmap.getWidth());
@@ -255,10 +269,11 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-            mImage.setImageBitmap(bitmap);
-            initText();
         }
+
+
+        mImage.setImageBitmap(bitmap);
+        initText();
     }
 
     /**

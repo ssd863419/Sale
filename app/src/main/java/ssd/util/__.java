@@ -51,7 +51,6 @@ public class __ {
         toast.show();
     }
 
-    // TODO wxy 確認2個bitmap的轉換method 是否ok
     /* 將bitmap 轉換為 可存入資料庫的blob格式 */
     public static byte[] bitmapToBytes(Bitmap bm){
         if (bm != null) {

@@ -172,7 +172,6 @@ public class FZXD004 extends Fragment implements Button.OnClickListener{
             } else {
                 holder = (ViewMap) convertView.getTag();
             }
-
             holder.getImageView(R.id.myImage).setImageBitmap(__.bytesToBimap(map.getBlob("huoPTP")));
             holder.getTextView(R.id.myTv_gongYSMC).setText(map.getString("gongYSMC"));
             holder.getTextView(R.id.myTv_jinHR).setText(map.getString("jinHR").substring(0, 10));
@@ -269,7 +268,6 @@ public class FZXD004 extends Fragment implements Button.OnClickListener{
 
         cursor = database.rawQuery(sql, null);
         list = Sql.parseCursor(cursor);
-
 
         if (mCb_zhiKT.isChecked()) {
             Fzxd004AdapterGrid adapter = new Fzxd004AdapterGrid(getActivity(), list);
