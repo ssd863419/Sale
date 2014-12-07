@@ -233,7 +233,6 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // TODO 圖片需要暫存, 然後在儲存時取用, 避免存在一堆不用的圖
 
         if (resultCode == Activity.RESULT_OK) {
             int edgeLength;     //用來做為照片的長寬
@@ -243,32 +242,18 @@ public class FZXD003 extends Fragment implements Button.OnClickListener {
                 return;
             }
 
-            String name = _.now("yyyyMMdd_HHmmss") + ".jpg";
             Bundle bundle = data.getExtras();
 
             // 获取相机返回的数据，并转换为Bitmap图片格式
             bitmap = (Bitmap) bundle.get("data");
-            FileOutputStream b = null;
-            File file = new File("/sdcard/myImage/");
-            file.mkdirs();// 创建文件夹
-            String fileName = "/sdcard/myImage/" + name;
 
             try {
                 edgeLength = (bitmap.getHeight() <= bitmap.getWidth() ?
                         bitmap.getHeight() : bitmap.getWidth());
 
                 bitmap = centerSquareScaleBitmap(bitmap, edgeLength);
-                b = new FileOutputStream(fileName);
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
-            } catch (FileNotFoundException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            } finally {
-                try {
-                    b.flush();
-                    b.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
             }
 
             mImage.setImageBitmap(bitmap);
